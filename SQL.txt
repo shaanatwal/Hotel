@@ -1,0 +1,169 @@
+-- Uncomment whenever you start from a new location.
+-- CREATE DATABASE hotel_deliverable; 
+USE hotel_deliverable; # we'll be calling our database hotel_deliverable 
+
+CREATE TABLE Hotel_Chain (
+  chain_id INT PRIMARY KEY,
+  chain_name VARCHAR(255) NOT NULL,
+  number_of_hotels INT NOT NULL,
+  street_number INT NOT NULL,
+  street_name VARCHAR(255) NOT NULL,
+  building_number VARCHAR(255),
+  city VARCHAR(255) NOT NULL,
+  province VARCHAR(255) NOT NULL,
+  phone_number VARCHAR(255) NOT NULL,
+  email_address VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Hotel (
+  hotel_id INT PRIMARY KEY,
+  chain_id INT NOT NULL,
+  hotel_name VARCHAR(255) NOT NULL,
+  street_number INT NOT NULL,
+  street_name VARCHAR(255) NOT NULL,
+  building_number VARCHAR(255),
+  city VARCHAR(255) NOT NULL,
+  province VARCHAR(255) NOT NULL,
+  zip VARCHAR(255) NOT NULL,
+  category_hotel VARCHAR(255) NOT NULL,
+  number_of_rooms INT NOT NULL,
+  phone_number VARCHAR(255) NOT NULL,
+  email_address VARCHAR(255) NOT NULL,
+  INDEX foreign_hotel_name (hotel_name), -- add this line to create an index on hotel_name
+  FOREIGN KEY (chain_id) REFERENCES Hotel_Chain(chain_id)
+);
+
+CREATE TABLE Room (
+  room_id INT PRIMARY KEY,
+  hotel_id INT NOT NULL,
+  capacity INT NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  amenities VARCHAR(255) NOT NULL,
+  room_view VARCHAR(255) NOT NULL,
+  room_extended INT NOT NULL,
+  damages BOOLEAN NOT NULL,
+  FOREIGN KEY (hotel_id) REFERENCES Hotel(hotel_id)
+);
+
+CREATE TABLE Employee (
+  employee_id INT PRIMARY KEY NOT NULL,
+  hotel_id INT NOT NULL,
+  hotel_name VARCHAR(255) NOT NULL,
+  employee_name VARCHAR(255) NOT NULL,
+  street_number INT NOT NULL,
+  street_name VARCHAR(255) NOT NULL,
+  city VARCHAR(255) NOT NULL,
+  province VARCHAR(255) NOT NULL,
+  SSN VARCHAR(255) NOT NULL,
+  job_role VARCHAR(255) NOT NULL,
+  FOREIGN KEY (hotel_id) REFERENCES Hotel(hotel_id),
+  CONSTRAINT foreign_hotel_name FOREIGN KEY (hotel_name) REFERENCES Hotel(hotel_name)
+);
+
+CREATE TABLE Booking (
+   booking_id INT PRIMARY KEY NOT NULL,
+   room_id INT NOT NULL,
+   employee_id INT NOT NULL,
+   customer_id INT NOT NULL,
+   capacity INT NOT NULL,
+   price DECIMAL(10,2) NOT NULL,
+   amenities VARCHAR(255) NOT NULL,
+   room_view VARCHAR(255) NOT NULL,
+   room_extended INT NOT NULL,
+   start_date DATE NOT NULL,
+   end_date DATE NOT NULL,
+   number_of_days INT NOT NULL,
+   FOREIGN KEY (room_id) REFERENCES Room(room_id),
+   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+  -- FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ADDED BELOW
+);
+
+CREATE TABLE Customer(
+   customer_id INT PRIMARY KEY NOT NULL,
+   booking_id INT, -- Booking ID can be null, it will be instantiazed once a booking is made!
+   renting_id INT NOT NULL,
+   SSN INT NOT NULL,
+   customer_name VARCHAR(255) NOT NULL,
+   street_number INT NOT NULL,
+   street_name VARCHAR(255) NOT NULL,
+   building_number VARCHAR(255),
+   city VARCHAR(255) NOT NULL,
+   province VARCHAR(255) NOT NULL,
+   zip VARCHAR(255) NOT NULL,
+   date_of_registration DATE NOT NULL,
+   FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
+  -- FOREIGN KEY (renting_id) REFERENCES Renting(renting_id) ADD LATER
+);
+
+ ALTER TABLE Booking
+ ADD FOREIGN KEY (customer_id) REFERENCES Customer(customer_id);
+
+CREATE TABLE Renting(
+   renting_id INT PRIMARY KEY NOT NULL,
+   booking_id INT NOT NULL,
+   employee_id INT NOT NULL,
+   customer_id INT NOT NULL,
+   room_id INT NOT NULL,
+   capacity INT NOT NULL,
+   price DECIMAL(10,2) NOT NULL,
+   amenities VARCHAR(255) NOT NULL,
+   room_view VARCHAR(255) NOT NULL,
+   room_extended INT NOT NULL,
+   check_in DATE NOT NULL,
+   check_out DATE NOT NULL,
+   days_rented INT NOT NULL,
+   payment DECIMAL(10,2) NOT NULL,
+   additional_charges DECIMAL(10,2) NOT NULL,
+   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
+   FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+   FOREIGN KEY (booking_id) REFERENCES Booking(booking_id),
+   FOREIGN KEY (room_id) REFERENCES Room(room_id)
+);
+
+INSERT INTO Hotel_Chain (chain_id, chain_name, number_of_hotels, street_number, street_name, building_number, city, province, phone_number, email_address) VALUES 
+(1, 'Marriott', 100, 123, 'Main St', 'Suite 100', 'New York', 'NY', '555-1234', 'marriott@gmail.com'),
+(2, 'Hilton', 75, 456, 'Broadway', NULL, 'Los Angeles', 'CA', '555-5678', 'hilton@gmail.com'),
+(3, 'Hyatt', 50, 789, 'Market St', NULL, 'Chicago', 'IL', '555-9012', 'hyatt@gmail.com');
+
+INSERT INTO Hotel (hotel_id, chain_id, hotel_name, street_number, street_name, building_number, city, province, zip, category_hotel, number_of_rooms, phone_number, email_address) VALUES 
+(1, 1, 'Marriott Downtown', 10, 'Broadway', 'Suite 200', 'New York', 'NY', '10001', 'Luxury', 500, '555-1111', 'marriottdt@gmail.com'),
+(2, 1, 'Marriott Midtown', 20, 'Fifth Ave', 'Suite 300', 'New York', 'NY', '10002', 'Business', 400, '555-2222', 'marriottmt@gmail.com'),
+(3, 2, 'Hilton Downtown', 30, 'Main St', 'Suite 400', 'Los Angeles', 'CA', '90001', 'Luxury', 300, '555-3333', 'hiltondt@gmail.com'),
+(4, 2, 'Hilton Midtown', 40, 'Broadway', NULL, 'Los Angeles', 'CA', '90002', 'Business', 200, '555-4444', 'hiltonmt@gmail.com'),
+(5, 3, 'Hyatt Downtown', 50, 'Market St', NULL, 'Chicago', 'IL', '60007', 'Luxury', 150, '555-5555', 'hyattdt@gmail.com'),
+(6, 3, 'Hyatt Midtown', 60, 'Michigan Ave', NULL, 'Chicago', 'IL', '60008', 'Business', 100, '555-6666', 'hyattmt@gmail.com');
+
+INSERT INTO Employee (employee_id, hotel_id, hotel_name, employee_name, street_number, street_name, city, province, SSN, job_role) VALUES 
+(1, 1, 'Marriott Downtown', 'John Smith', 1234, 'Main St', 'Toronto', 'Ontario', '123-456-789', 'Front Desk Clerk'),
+(2, 2, 'Hilton Downtown', 'Jane Doe', 5678, 'Elm St', 'Vancouver', 'British Columbia', '987-654-321', 'Housekeeping'),
+(3, 2, 'Marriott Midtown', 'Bob Johnson', 2468, 'Oak St', 'Calgary', 'Alberta', '111-222-333', 'Restaurant Server'),
+(4, 4, 'Hilton Midtown', 'Jane Doe', 5678, 'Elm St', 'Vancouver', 'British Columbia', '987-654-321', 'Housekeeping'),
+(5, 4, 'Hilton Midtown', 'John Paul', 1234, 'Elmer Ave', 'Vancouver', 'British Columbia', '947-555-955', 'Housekeeping'),
+(6, 5, 'Hyatt Downtown', 'Bob Johnson', 2468, 'Oak St', 'Calgary', 'Alberta', '111-222-333', 'Restaurant Server');
+
+
+INSERT INTO Room (room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages) VALUES 
+ (1, 1, 2, 100.00, 'Free Wi-Fi, TV, Air conditioning', 'City view', 1, false),
+ (2, 1, 4, 200.00, 'Free Wi-Fi, TV, Air conditioning, Mini-fridge, Kitchenette', 'Sea view', 0, true),
+ (3, 2, 2, 150.00, 'Free Wi-Fi, TV, Air conditioning, Mini-fridge', 'Pool view', 1, false),
+ (4, 3, 1, 75.00, 'Free Wi-Fi, TV, Air conditioning', 'Mountain view', 0, true),
+ (5, 4, 3, 300.00, 'Free Wi-Fi, TV, Air conditioning, Mini-fridge, Kitchenette, Jacuzzi', 'Beach view', 1, false);
+ 
+ 
+ INSERT INTO Customer (customer_id, renting_id, SSN, customer_name, street_number, street_name, building_number, city, province, zip, date_of_registration) VALUES
+(4, 4, 456789012, 'Maria Rodriguez', 40, 'Calle del Sol', 'Apt. 5', 'Madrid', 'Spain', '28013', '2023-04-04'),
+(5, 5, 567890123, 'Hiroshi Nakamura', 50, 'Shinjuku Street', NULL, 'Tokyo', 'Japan', '100-8001', '2023-04-05'),
+(6, 6, 678901234, 'Juan Perez', 60, 'Avenida Libertador', NULL, 'Caracas', 'Venezuela', '1050', '2023-04-06'),
+(7, 7, 789012345, 'Anna Kowalska', 70, 'Krakowska Street', 'Apt. 7', 'Krakow', 'Poland', '31-062', '2023-04-07'),
+(8, 8, 890123456, 'Mohammed Ahmed', 80, 'Al Wahda Road', NULL, 'Dubai', 'United Arab Emirates', '1246', '2023-04-08');
+
+INSERT INTO Booking (booking_id, room_id, employee_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, number_of_days) VALUES 
+ (1, 1, 1, 4, 2, 100.00, 'WiFi, TV', 'Mountain View', 0, '2023-05-01', '2023-05-05', 4),
+ (2, 2, 2, 5, 4, 200.00, 'WiFi, TV, Minibar', 'City View', 1, '2023-06-10', '2023-06-14', 4),
+ (3, 3, 3, 6, 1, 80.00, 'WiFi', 'No View', 0, '2023-07-20', '2023-07-23', 3),
+ (4, 4, 4, 7, 3, 150.00, 'WiFi, TV, Balcony', 'Sea View', 1, '2023-08-15', '2023-08-19', 4),
+ (5, 5, 5, 8, 2, 120.00, 'WiFi, TV, Pool', 'Garden View', 1, '2023-09-05', '2023-09-09', 4);
+
+
+
+
