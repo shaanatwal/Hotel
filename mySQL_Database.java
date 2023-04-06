@@ -12,5 +12,5 @@ public class mySQL_Database {
   public static Connection getConnection() throws SQLException {
     Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
     return conn;
-  }
+}
 }
