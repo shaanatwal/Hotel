@@ -1,0 +1,8 @@
+{
+    "java.format.settings.url": "eclipse-formatter.xml",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Program Files (x86)\\MySQL\\Connector J 8.0\\mysql-connector-j-8.0.32.jar",
+        "c:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\lib\\servlet-api.jar"
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Backend",
+            "request": "launch",
+            "mainClass": "jakarta.servlet/testing.nodetest.Backend",
+            "projectName": "Hotel_3ec065ac"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "Hotel_3ec065ac"
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        }
+    ]
+}

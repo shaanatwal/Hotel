@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Hotel Booking</title>
+	<link rel="stylesheet" type="text/css" href="Hotel.css">
+</head>
+
+<body>
+	<div class="container">
+		<h1>Hotel Booking</h1>
+		<form>
+			<label for="location">Location:</label>
+			<select id="location">
+				<option value="">--Select Location--</option>
+			</select>
+			<label for="checkin">Check-in date:</label>
+			<input type="date" id="checkin">
+			<label for="checkout">Check-out date:</label>
+			<input type="date" id="checkout">
+			<button type="button" onclick="getHotels()">Search</button>
+		</form>
+		<div id="hotels"></div>
+	</div>
+
+	<section class="showcase">
+		<div class="overlay">
+		  <h2>Booking your next vacation</h2>
+		  <p>
+			Just Got Simpler.
+		  </p>
+		</div>
+	</section>
+
+	<script src="app.js"></script>
+</body>
+
+</html>
