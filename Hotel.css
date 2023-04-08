@@ -228,3 +228,7 @@ button {
 	background: #e8b866; /* Green background */
 	cursor: pointer; /* Cursor on hover */
 }
+
+.button-search {
+	z-index: 9999;
+}

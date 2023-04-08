@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hotel Booking</title>
+		<link rel="stylesheet" type="text/css" href="Hotel.css" />
+	</head>
+
+	<body>
+		<div class="container">
+			<h1>Hotel Booking</h1>
+			<form>
+				<div class="form-content">
+					<label for="checkin">Check-in date:</label>
+					<input type="date" id="checkin" />
+					<label for="checkout">Check-out date:</label>
+					<input type="date" id="checkout" />
+
+					<label for="price">Price:</label>
+					<input type="number" id="price-min" placeholder="Min" />
+					<input type="number" id="price-max" placeholder="Max" />
+
+					<label for="amenities">Amenities:</label>
+					<select id="amenities" multiple>
+						<option value="pool">Pool</option>
+						<option value="gym">Gym</option>
+					</select>
+
+					<label for="room-view">Room View:</label>
+					<select id="room-view">
+						<option value="">--Select Room View--</option>
+						<option value="ocean">Ocean</option>
+						<option value="city">City</option>
+					</select>
+
+					<label for="capacity">Capacity:</label>
+					<select id="capacity">
+						<option value="">--Select Capacity--</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+					</select>
+
+					<label>Extended:</label>
+					<div class="extended-options">
+						<input type="radio" id="extended-yes" name="extended" value="yes" />
+						<label for="extended-yes">Yes</label>
+						<input type="radio" id="extended-no" name="extended" value="no" />
+						<label for="extended-no">No</label>
+						<button type="button" onclick="getHotels()">Search</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<section class="showcase">
+			<div class="overlay">
+				<h2>Booking your next vacation?</h2>
+				<p>It Just Got Easier.</p>
+			</div>
+		</section>
+
+		<script src="app.js"></script>
+	</body>
+</html>
