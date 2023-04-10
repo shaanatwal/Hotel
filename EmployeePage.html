@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hotel Booking</title>
+		<link rel="stylesheet" type="text/css" href="Hotel.css" />
+	</head>
+
+	<body>
+		<div class="container">
+			<h1>Hotel Booking Management</h1>
+			<p>Please select an option below to continue:</p>
+			<button type="button" onclick="goToManage('booking')">Manage Booking</button>
+			<button type="button" onclick="goToManage('rooms')">Manage Rooms</button>
+            <button type="button" onclick="goToManage('hotel')">Manage Hotels</button>
+		</div>
+
+		<script src="app.js"></script>
+		<script>
+			function goToManage(type) {
+				if (type === "booking") {
+					window.location.href = "ManageBooking.html";
+				} else if (type === "rooms") {
+					window.location.href = "ManageRooms.html";
+				}
+                else if (type === "hotel") {
+					window.location.href = "ManageHotels.html";
+				}
+			}
+		</script>
+	</body>
+</html>
+

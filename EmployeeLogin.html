@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hotel Booking</title>
+		<link rel="stylesheet" type="text/css" href="Hotel.css" />
+	</head>
+
+	<body>
+		<div class="container">
+			<h1 id="title">Hotel Employee Login</h1>
+			<section class="login">
+				<form>
+					<label for="username">Username:</label>
+					<input type="text" id="username" name="username" />
+					<label for="password">Password:</label>
+					<input type="password" id="password" name="password" />
+					<button type="button" onclick="login()">Login</button>
+                    
+                    <br>
+					<button type="button" onclick="toggleSignUp()">Sign Up</button>
+				</form>
+			</section>
+            
+			<section class="signup" style="display: none;">
+				<form>
+					<label for="username">Username:</label>
+					<input type="text" id="signup-username" name="username" />
+					<label for="password">Password:</label>
+					<input type="password" id="signup-password" name="password" />
+					<label for="password-confirm">Confirm Password:</label>
+					<input type="password" id="signup-password-confirm" name="password-confirm" />
+					<button type="button" onclick="signUp()">Sign Up</button>
+					<br>
+					<button type="button" onclick="toggleSignUp()">Back</button>
+				</form>
+			</section>
+		</div>
+
+		<script src="app.js"></script>
+		<script>
+			function login() {
+				const username = document.getElementById("username").value;
+				const password = document.getElementById("password").value;
+				if (username === "admin" && password === "database") {
+					alert("Login successful!");
+				} else {
+					alert("Invalid username or password.");
+				}
+			}
+
+			function toggleSignUp() {
+				const signUpSection = document.querySelector(".signup");
+				const loginSection = document.querySelector(".login");
+				if (signUpSection.style.display === "none") {
+					signUpSection.style.display = "block";
+					loginSection.style.display = "none";
+					document.getElementById("title").innerText = "Hotel Employee Signup";
+				} else {
+					signUpSection.style.display = "none";
+					loginSection.style.display = "block";
+					document.getElementById("title").innerText = "Hotel Employee Login";
+				}
+			}
+
+			function signUp() {
+				const username = document.getElementById("signup-username").value;
+				const password = document.getElementById("signup-password").value;
+				const passwordConfirm = document.getElementById("signup-password-confirm").value;
+				if (username === "" || password === "" || passwordConfirm === "") {
+					alert("Please fill in all fields.");
+				} else if (password !== passwordConfirm) {
+					alert("Passwords do not match.");
+				} else {
+					alert("Sign up successful!");
+					document.getElementById("signup-username").value = "";
+					document.getElementById("signup-password").value = "";
+					document.getElementById("signup-password-confirm").value = "";
+				}
+			}
+		</script>
+
+		<section class="showcase">
+			<div class="overlay">
+				<h2>Booking your next vacation</h2>
+				<p>Just Got Simpler.</p>
+			</div>
+		</section>
+	</body>
+</html>
