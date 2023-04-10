@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hotel Booking</title>
+		<link rel="stylesheet" type="text/css" href="Hotel.css" />
+	</head>
+
+	<body>
+		<div class="container">
+			<h1>Welcome to the Hotel Booking Website</h1>
+			<p>Please select an option below to continue:</p>
+			<button type="button" onclick="goToLogin('employee')">Hotel Employees</button>
+			<button type="button" onclick="goToLogin('customer')">Hotel Customers</button>
+		</div>
+
+		<script src="app.js"></script>
+		<script>
+			function goToLogin(type) {
+				if (type === "employee") {
+					window.location.href = "EmployeeLogin.html";
+				} else if (type === "customer") {
+					window.location.href = "CustomerLogin.html";
+				}
+			}
+		</script>
+	</body>
+</html>

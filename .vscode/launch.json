@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "Hotel_b2e82c6e"
+        },
+        {
+            "type": "java",
             "name": "Backend",
             "request": "launch",
             "mainClass": "jakarta.servlet/testing.nodetest.Backend",
