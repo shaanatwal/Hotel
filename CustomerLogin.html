@@ -15,22 +15,26 @@
 					<label for="password">Password:</label>
 					<input type="password" id="password" name="password" />
 					<button type="button" onclick="login()">Login</button>
-                    
-                    <br>
+
+					<br />
 					<button type="button" onclick="toggleSignUp()">Sign Up</button>
 				</form>
 			</section>
-            
-			<section class="signup" style="display: none;">
+
+			<section class="signup" style="display: none">
 				<form>
 					<label for="username">Username:</label>
 					<input type="text" id="signup-username" name="username" />
 					<label for="password">Password:</label>
 					<input type="password" id="signup-password" name="password" />
 					<label for="password-confirm">Confirm Password:</label>
-					<input type="password" id="signup-password-confirm" name="password-confirm" />
+					<input
+						type="password"
+						id="signup-password-confirm"
+						name="password-confirm"
+					/>
 					<button type="button" onclick="signUp()">Sign Up</button>
-					<br>
+					<br />
 					<button type="button" onclick="toggleSignUp()">Back</button>
 				</form>
 			</section>
@@ -43,6 +47,7 @@
 				const password = document.getElementById("password").value;
 				if (username === "admin" && password === "database") {
 					alert("Login successful!");
+					window.location.href = "EmployeePage.html";
 				} else {
 					alert("Invalid username or password.");
 				}
@@ -65,7 +70,9 @@
 			function signUp() {
 				const username = document.getElementById("signup-username").value;
 				const password = document.getElementById("signup-password").value;
-				const passwordConfirm = document.getElementById("signup-password-confirm").value;
+				const passwordConfirm = document.getElementById(
+					"signup-password-confirm"
+				).value;
 				if (username === "" || password === "" || passwordConfirm === "") {
 					alert("Please fill in all fields.");
 				} else if (password !== passwordConfirm) {
