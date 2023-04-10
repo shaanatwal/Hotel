@@ -14,7 +14,7 @@
 					<input type="text" id="username" name="username" />
 					<label for="password">Password:</label>
 					<input type="password" id="password" name="password" />
-					<button type="button" onclick="login()">Login</button>
+					<button type="button">Login</button>
 
 					<br />
 					<button type="button" onclick="toggleSignUp()">Sign Up</button>
@@ -42,12 +42,17 @@
 
 		<script src="app.js"></script>
 		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				const loginButton = document.querySelector("button[type='button']");
+				loginButton.addEventListener("click", login);
+			});
+
 			function login() {
 				const username = document.getElementById("username").value;
 				const password = document.getElementById("password").value;
 				if (username === "admin" && password === "database") {
 					alert("Login successful!");
-					window.location.href = "EmployeePage.html";
+					window.location.href = "Hotel.html";
 				} else {
 					alert("Invalid username or password.");
 				}
