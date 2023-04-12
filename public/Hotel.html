@@ -15,15 +15,6 @@
 				<input type="range" min="1" max="5" value="3" class="slider" id="myRange" />
 				<span id="sliderValue">☆☆☆</span>
 			</div>
-			<script>
-				var slider = document.getElementById("myRange");
-				var output = document.getElementById("sliderValue");
-				output.innerHTML = "☆☆☆"; // Display the default slider value
-
-				slider.oninput = function () {
-					output.innerHTML = "☆".repeat(this.value);
-				};
-			</script>
 			<div class="location-select">
 				<label for="location">Location:</label>
 				<select id="location">
@@ -65,35 +56,49 @@
 				});
 
 				locationSelect.addEventListener("change", async function () {
-					const hotelsSelect = document.getElementById("hotels");
-					hotelsSelect.innerHTML = "<option value=''>--- Select ---</option>"; // clear previous options
-
-					if (locationSelect.value !== "") {
-						const response = await fetch(`/hotels?location=${locationSelect.value}`);
-						if (!response.ok) {
-							throw new Error("Failed to fetch hotels");
-						}
-
-						const hotels = await response.json();
-						hotels.forEach((hotel) => {
-							const option = document.createElement("option");
-							option.value = hotel;
-							option.textContent = hotel;
-							hotelsSelect.appendChild(option);
-						});
-
-						formContent.style.display = "block";
-					} else {
-						formContent.style.display = "none";
-					}
+					updateHotelsList(locationSelect.value, slider.value);
 				});
 			} catch (error) {
 				console.error("Error fetching locations:", error);
 			}
 		}
 
-		fetchLocations();
+		async function updateHotelsList(location, rating) {
+			const hotelsSelect = document.getElementById("hotels");
+			hotelsSelect.innerHTML = "<option value=''>--- Select ---</option>"; // clear previous options
 
+			if (location !== "") {
+				const response = await fetch(`/hotels?location=${location}&rating=${rating}`);
+				if (!response.ok) {
+					throw new Error("Failed to fetch hotels");
+				}
+
+				const hotels = await response.json();
+				hotels.forEach((hotel) => {
+					const option = document.createElement("option");
+					option.value = hotel;
+					option.textContent = hotel;
+					hotelsSelect.appendChild(option);
+				});
+
+				formContent.style.display = "block";
+			} else {
+				formContent.style.display = "none";
+			}
+		}
+
+		fetchLocations();
+	</script>
+
+	<script>
+		var slider = document.getElementById("myRange");
+		var output = document.getElementById("sliderValue");
+		output.innerHTML = "☆☆☆"; // Display the default slider value
+
+		slider.oninput = function () {
+			output.innerHTML = "☆".repeat(this.value);
+			updateHotelsList(locationSelect.value, this.value);
+		};
 	</script>
 
 	<script>

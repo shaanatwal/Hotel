@@ -29,11 +29,12 @@ app.get("/locations", async (req, res) => {
   }
 });
 
-// retrieves all hotels that exist in a specified city
+// gets a hotel by its city
+// new: AND rating aswell.
 app.get("/hotels", async (req, res) => {
-  const { location } = req.query;
+  const { location, rating } = req.query;
   try {
-    const hotels = await getHotelsByLocation(location);
+    const hotels = await getHotelsByLocation(location, parseInt(rating, 10));
     res.json(hotels);
   } catch (error) {
     console.error("Error fetching hotels:", error);

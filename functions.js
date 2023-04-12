@@ -13,16 +13,18 @@ function getLocations() {
 }
 
 
-async function getHotelsByLocation(location) {
-  const query = `SELECT hotel_name FROM Hotel WHERE city = ?`;
+// Update the getHotelsByLocation function to include the rating parameter:
+async function getHotelsByLocation(location, rating) {
+  const query = `SELECT hotel_name FROM Hotel WHERE city = ? AND category_hotel = ?`;
   const results = await new Promise((resolve, reject) => {
-    connection.query(query, [location], (err, results) => {
+    connection.query(query, [location, rating], (err, results) => {
       if (err) reject(err);
       else resolve(results);
     });
   });
   return results.map((row) => row.hotel_name);
 }
+
 
 
 
