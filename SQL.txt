@@ -83,8 +83,10 @@ CREATE TABLE Booking (
 
 CREATE TABLE Customer(
    customer_id INT PRIMARY KEY NOT NULL,
+   customer_username VARCHAR(255) NOT NULL,
+   customer_password VARCHAR(255) NOT NULL,
    booking_id INT, -- Booking ID can be null, it will be instantiazed once a booking is made!
-   renting_id INT NOT NULL,
+   renting_id INT,
    SSN INT NOT NULL,
    customer_name VARCHAR(255) NOT NULL,
    street_number INT NOT NULL,
@@ -189,12 +191,12 @@ INSERT INTO Room (room_id, hotel_id, capacity, price, amenities, room_view, room
  (5, 4, 3, 300.00, 'Free Wi-Fi, TV, Air conditioning, Mini-fridge, Kitchenette, Jacuzzi', 'Beach view', 1, false);
  
  
- INSERT INTO Customer (customer_id, renting_id, SSN, customer_name, street_number, street_name, building_number, city, province, zip, date_of_registration) VALUES
-(4, 4, 456789012, 'Maria Rodriguez', 40, 'Calle del Sol', 'Apt. 5', 'Madrid', 'Spain', '28013', '2023-04-04'),
-(5, 5, 567890123, 'Hiroshi Nakamura', 50, 'Shinjuku Street', NULL, 'Tokyo', 'Japan', '100-8001', '2023-04-05'),
-(6, 6, 678901234, 'Juan Perez', 60, 'Avenida Libertador', NULL, 'Caracas', 'Venezuela', '1050', '2023-04-06'),
-(7, 7, 789012345, 'Anna Kowalska', 70, 'Krakowska Street', 'Apt. 7', 'Krakow', 'Poland', '31-062', '2023-04-07'),
-(8, 8, 890123456, 'Mohammed Ahmed', 80, 'Al Wahda Road', NULL, 'Dubai', 'United Arab Emirates', '1246', '2023-04-08');
+ INSERT INTO Customer (customer_id, customer_username, customer_password, booking_id, renting_id, SSN, customer_name, street_number, street_name, building_number, city, province, zip, date_of_registration) VALUES
+(4, "Maria", "password", null, 4, 456789012, 'Maria Rodriguez', 40, 'Calle del Sol', 'Apt. 5', 'Madrid', 'Spain', '28013', '2023-04-04'),
+(5, "username", "password", null,5, 567890123, 'Hiroshi Nakamura', 50, 'Shinjuku Street', NULL, 'Tokyo', 'Japan', '100-8001', '2023-04-05'),
+(6, "a", "a", null,6, 678901234, 'Juan Perez', 60, 'Avenida Libertador', NULL, 'Caracas', 'Venezuela', '1050', '2023-04-06'),
+(7, "123", "123", null,7, 789012345, 'Anna Kowalska', 70, 'Krakowska Street', 'Apt. 7', 'Krakow', 'Poland', '31-062', '2023-04-07'),
+(8, "CoolNameBro", "Thanks!", null,8, 890123456, 'Mohammed Ahmed', 80, 'Al Wahda Road', NULL, 'Dubai', 'United Arab Emirates', '1246', '2023-04-08');
 
 INSERT INTO Booking (booking_id, room_id, employee_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, number_of_days) VALUES 
  (1, 1, 1, 4, 2, 100.00, 'WiFi, TV', 'Mountain View', 0, '2023-05-01', '2023-05-05', 4),
@@ -204,5 +206,5 @@ INSERT INTO Booking (booking_id, room_id, employee_id, customer_id, capacity, pr
  (5, 5, 5, 8, 2, 120.00, 'WiFi, TV, Pool', 'Garden View', 1, '2023-09-05', '2023-09-09', 4);
 
 
-
+select * from Customer
 
