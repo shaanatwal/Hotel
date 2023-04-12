@@ -1,37 +1,15 @@
 const express = require("express");
+const path = require("path"); // root
 const { getLocations } = require("./functions");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", async (req, res) => {
-  try {
-    const locations = await getLocations();
-    console.log("Locations:", locations); // Debugging line
-
-    const options = locations
-      .map((location) => `<option value="${location}">${location}</option>`)
-      .join("");
-
-    console.log("Options:", options); // Debugging line
-
-    const form = `
-      <form action="/submit" method="POST">
-          <label for="location">Choose a location:</label>
-          <select name="location" id="location">
-              ${options}
-          </select>
-          <input type="submit" value="Submit">
-      </form>
-    `;
-
-    res.send(form);
-  } catch (error) {
-    console.error("Error fetching locations:", error); // Debugging line
-    res.status(500).send("Error fetching locations");
-  }
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "MainPage.html"));
 });
 
 app.post("/submit", (req, res) => {
@@ -40,6 +18,18 @@ app.post("/submit", (req, res) => {
   res.send(`Selected location: ${selectedLocation}`);
 });
 
+// retrieves all unique city names
+app.get("/locations", async (req, res) => {
+  try {
+    const locations = await getLocations();
+    res.json(locations);
+  } catch (error) {
+    console.error("Error fetching locations:", error);
+    res.status(500).json({ error: "Error fetching locations" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
+
