@@ -2,6 +2,9 @@
 -- CREATE DATABASE hotel_deliverable; 
 USE hotel_deliverable; # we'll be calling our database hotel_deliverable 
 
+-- After running everything, uncomment this to allow the node to run.
+-- ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
+
 CREATE TABLE Hotel_Chain (
   chain_id INT PRIMARY KEY,
   chain_name VARCHAR(255) NOT NULL,
@@ -25,7 +28,7 @@ CREATE TABLE Hotel (
   city VARCHAR(255) NOT NULL,
   province VARCHAR(255) NOT NULL,
   zip VARCHAR(255) NOT NULL,
-  category_hotel VARCHAR(255) NOT NULL,
+  category_hotel INT NOT NULL, -- Stars from 1-5
   number_of_rooms INT NOT NULL,
   phone_number VARCHAR(255) NOT NULL,
   email_address VARCHAR(255) NOT NULL,
@@ -121,17 +124,53 @@ CREATE TABLE Renting(
 );
 
 INSERT INTO Hotel_Chain (chain_id, chain_name, number_of_hotels, street_number, street_name, building_number, city, province, phone_number, email_address) VALUES 
-(1, 'Marriott', 100, 123, 'Main St', 'Suite 100', 'New York', 'NY', '555-1234', 'marriott@gmail.com'),
-(2, 'Hilton', 75, 456, 'Broadway', NULL, 'Los Angeles', 'CA', '555-5678', 'hilton@gmail.com'),
-(3, 'Hyatt', 50, 789, 'Market St', NULL, 'Chicago', 'IL', '555-9012', 'hyatt@gmail.com');
+(1, 'Marriott', 8, 123, 'Main St', 'Suite 100', 'New York', 'NY', '212-555-1234', 'marriott@gmail.com'),
+(2, 'Hilton', 8, 456, 'Broadway', NULL, 'Los Angeles', 'CA', '213-555-5678', 'hilton@gmail.com'),
+(3, 'Hyatt', 8, 789, 'Market St', NULL, 'Chicago', 'IL', '312-555-9012', 'hyatt@gmail.com'),
+(4, 'InterContinental', 8, 1213, 'Madison Avenue', NULL, 'New York', 'NY', '212-555-1213', 'intercontinental@gmail.com'),
+(5, 'Four Seasons', 8, 1415, 'Park Avenue', NULL, 'New York', 'NY', '212-555-1415', 'fourseasons@gmail.com');
 
 INSERT INTO Hotel (hotel_id, chain_id, hotel_name, street_number, street_name, building_number, city, province, zip, category_hotel, number_of_rooms, phone_number, email_address) VALUES 
-(1, 1, 'Marriott Downtown', 10, 'Broadway', 'Suite 200', 'New York', 'NY', '10001', 'Luxury', 500, '555-1111', 'marriottdt@gmail.com'),
-(2, 1, 'Marriott Midtown', 20, 'Fifth Ave', 'Suite 300', 'New York', 'NY', '10002', 'Business', 400, '555-2222', 'marriottmt@gmail.com'),
-(3, 2, 'Hilton Downtown', 30, 'Main St', 'Suite 400', 'Los Angeles', 'CA', '90001', 'Luxury', 300, '555-3333', 'hiltondt@gmail.com'),
-(4, 2, 'Hilton Midtown', 40, 'Broadway', NULL, 'Los Angeles', 'CA', '90002', 'Business', 200, '555-4444', 'hiltonmt@gmail.com'),
-(5, 3, 'Hyatt Downtown', 50, 'Market St', NULL, 'Chicago', 'IL', '60007', 'Luxury', 150, '555-5555', 'hyattdt@gmail.com'),
-(6, 3, 'Hyatt Midtown', 60, 'Michigan Ave', NULL, 'Chicago', 'IL', '60008', 'Business', 100, '555-6666', 'hyattmt@gmail.com');
+(01, 1, 'Marriott Downtown', 10, 'Broadway', 'Suite 200', 'New York', 'NY', '10001', 2, 500, '212-555-1111', 'marriottdt@gmail.com'),
+(02, 1, 'Marriott Midtown', 20, 'Fifth Ave', 'Suite 300', 'New York', 'NY', '10002', 4, 400, '212-555-2222', 'marriottmt@gmail.com'),
+(03, 1, 'Marriott Waterfront', 100, 'Avenue of the Arts', 'Suite 400', 'Seattle', 'WA', '98121', 1, 350, '202-555-3333', 'marriottwf@gmail.com'),
+(04, 1, 'Marriott Harbourfront', 500, 'Water St', 'Suite 1000', 'Halifax', 'NS', 'B3J 3Y5', 3, 350, '782-555-4444', 'marriotthf@gmail.com'),
+(05, 1, 'Marriott Marquis', 1535, 'Broadway', 'Suite 1400', 'New York', 'NY', '10036', 5, 2000, '213-555-5555', 'marriottmq@gmail.com'),
+(06, 1, 'Marriott Downtown LA', 900, 'West Olympic Blvd', 'Suite 3000', 'Los Angeles', 'CA', '90015', 3, 450, '423-555-6666', 'marriottdtla@gmail.com'),
+(07, 1, 'Marriott San Francisco', 55, 'Fourth St', 'Suite 100', 'San Francisco', 'CA', '94103', 1, 400, '534-555-7777', 'marriottsf@gmail.com'),
+(08, 1, 'Marriott Hollywood Beach', 2501, 'North Ocean Dr', 'Suite 1000', 'Hollywood', 'FL', '33019', 5, 350, '432-555-8888', 'marriotthb@gmail.com'),
+(09, 2, 'Hilton Downtown', 30, 'Main St', 'Suite 400', 'Los Angeles', 'CA', '90001', 2, 300, '432-555-3333', 'hiltondt@gmail.com'),
+(10, 2, 'Hilton Midtown', 40, 'Broadway', NULL, 'Los Angeles', 'CA', '90002', 3, 200, '543-555-4444', 'hiltonmt@gmail.com'),
+(11, 2, 'Hilton Garden Inn', 50, 'Fifth Ave', NULL, 'Chicago', 'IL', '60601', 4, 150, '312-555-7777', 'hgichicago@gmail.com'),
+(12, 2, 'Hampton Inn', 60, 'Michigan Ave', NULL, 'Chicago', 'IL', '60602', 5, 100, '312-555-8888', 'hamptonchicago@gmail.com'),
+(13, 2, 'Hilton Resort', 70, 'Ocean Blvd', 'Suite 100', 'Miami', 'FL', '33101', 1, 400, '305-555-1111', 'hiltonresortmiami@gmail.com'),
+(14, 2, 'DoubleTree by Hilton', 80, 'Collins Ave', NULL, 'Miami', 'FL', '33102', 2, 250, '305-555-2222', 'doubletreemiami@gmail.com'),
+(15, 2, 'Hilton Garden Inn', 90, 'International Dr', 'Suite 500', 'Orlando', 'FL', '32801', 3, 150, '407-555-3333', 'hgiorlando@gmail.com'),
+(16, 2, 'Homewood Suites by Hilton', 100, 'Universal Blvd', NULL, 'Orlando', 'FL', '32802', 4, 200, '407-555-4444', 'homewoodorlando@gmail.com'),
+(17, 3, 'Hyatt Downtown', 50, 'Market St', NULL, 'Chicago', 'IL', '60007', 5, 150, '736-555-5555', 'hyattdt@gmail.com'),
+(18, 3, 'Hyatt Midtown', 60, 'Michigan Ave', NULL, 'Chicago', 'IL', '60008', 2, 100, '534-555-6666', 'hyattmt@gmail.com'),
+(19, 3, 'Hyatt Place', 101, 'East Erie St', NULL, 'Chicago', 'IL', '60009', 3, 200, '312-555-7777', 'hyattplace@gmail.com'),
+(20, 3, 'Hyatt Regency', 200, 'South Third St', NULL, 'Phoenix', 'AZ', '85004', 4, 500, '602-555-8888', 'hyattregency@gmail.com'),
+(21, 3, 'Hyatt House', 100, 'East Stanton Ave', NULL, 'Salt Lake City', 'UT', '84101', 5, 250, '801-555-9999', 'hyatthouse@gmail.com'),
+(22, 3, 'Hyatt Centric', 250, 'West 43rd St', NULL, 'New York', 'NY', '10036', 1, 150, '212-555-0000', 'hyattcentric@gmail.com'),
+(23, 3, 'Hyatt Ziva', 600, 'Carr Blvd', NULL, 'San Antonio', 'TX', '78209', 2, 350, '210-555-1111', 'hyattziva@gmail.com'),
+(24, 3, 'Hyatt Regency', 900, 'North Michigan Ave', NULL, 'Chicago', 'IL', '60611', 3, 400, '312-555-2222', 'hyattregency2@gmail.com'),
+(25, 4, 'InterContinental Downtown', 100, 'Robson St', NULL, 'Vancouver', 'BC', 'V6E 1A5', 4, 400, '604-555-5555', 'icdowntown@gmail.com'),
+(26, 4, 'InterContinental Midtown', 200, 'Bloor St', NULL, 'Toronto', 'ON', 'M4W 1A7', 5, 300, '416-555-5555', 'icmidtown@gmail.com'),
+(27, 4, 'InterContinental North York', 100, 'Sheppard Ave E', NULL, 'North York', 'ON', 'M2N 6X1', 1, 250, '416-555-6666', 'icnorthyork@gmail.com'),
+(28, 4, 'InterContinental Old Montreal', 300, 'St Antoine St W', NULL, 'Montreal', 'QC', 'H2Z 1C6', 2, 150, '514-555-5555', 'icoldmontreal@gmail.com'),
+(29, 4, 'InterContinental Mark Hopkins', 999, 'California St', NULL, 'San Francisco', 'CA', '94108', 3, 350, '415-555-5555', 'icmarkhopkins@gmail.com'),
+(30, 4, 'InterContinental Barclay', 111, 'East 48th St', NULL, 'New York', 'NY', '10017', 4, 250, '212-555-5555', 'icbarclay@gmail.com'),
+(31, 4, 'InterContinental Times Square', 300, 'West 44th St', NULL, 'New York', 'NY', '10036', 5, 400, '212-555-6666', 'ictsq@gmail.com'),
+(32, 4, 'InterContinental Los Angeles', 900, 'Wilshire Blvd', NULL, 'Los Angeles', 'CA', '90017', 1, 300, '213-555-5555', 'icla@gmail.com'),
+(33, 5, 'Four Seasons Downtown', 10, 'Broadway', 'Suite 200', 'New York', 'NY', '10001', 2, 500, '555-1111', 'fourseasonsdowntown@gmail.com'),
+(34, 5, 'Four Seasons Midtown', 20, 'Fifth Ave', 'Suite 300', 'New York', 'NY', '10002', 3, 400, '555-2222', 'fourseasonsmidtown@gmail.com'),
+(35, 5, 'Four Seasons Uptown', 30, 'Park Ave', 'Suite 400', 'New York', 'NY', '10003', 4, 300, '555-3333', 'fourseasonsu@gmail.com'),
+(36, 5, 'Four Seasons Brooklyn', 40, 'Flatbush Ave', NULL, 'Brooklyn', 'NY', '11201', 5, 250, '555-4444', 'fourseasonsbk@gmail.com'),
+(37, 5, 'Four Seasons Miami', 50, 'Collins Ave', NULL, 'Miami', 'FL', '33139', 1, 700, '555-5555', 'fourseasonsmiami@gmail.com'),
+(38, 5, 'Four Seasons Beverly Hills', 60, 'Wilshire Blvd', NULL, 'Beverly Hills', 'CA', '90212', 2, 400, '555-6666', 'fourseasonsbh@gmail.com'),
+(39, 5, 'Four Seasons San Francisco', 70, 'Market St', NULL, 'San Francisco', 'CA', '94102', 3, 350, '555-7777', 'fourseasonssf@gmail.com'),
+(40, 5, 'Four Seasons Las Vegas', 80, 'Las Vegas Blvd', NULL, 'Las Vegas', 'NV', '89109', 4, 600, '555-8888', 'fourseasonslv@gmail.com');
 
 INSERT INTO Employee (employee_id, hotel_id, hotel_name, employee_name, street_number, street_name, city, province, SSN, job_role) VALUES 
 (1, 1, 'Marriott Downtown', 'John Smith', 1234, 'Main St', 'Toronto', 'Ontario', '123-456-789', 'Front Desk Clerk'),
