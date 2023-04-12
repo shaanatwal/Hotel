@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path"); // root
-const { getLocations, getHotelsByLocation, createCustomer } = require("./functions");
+const { getLocations, getHotelsByLocation, createCustomer, checkCustomerUserCredentials } = require("./functions");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -79,6 +79,18 @@ app.get("/hotels", async (req, res) => {
     res.status(500).json({ error: "Error fetching hotels" });
   }
 });
+
+app.post("/logincustomer", async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const isAuthenticated = await checkCustomerUserCredentials(username, password);
+    res.status(200).json({ isAuthenticated });
+  } catch (error) {
+    console.error("Error authenticating user:", error);
+    res.status(500).json({ error: "Error authenticating user" });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);

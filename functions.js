@@ -70,10 +70,24 @@ async function createCustomer(
 }
 
 
+async function checkCustomerUserCredentials(username, password) {
+  const sql = "SELECT * FROM Customer WHERE customer_username = ? AND customer_password = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [username, password], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results.length > 0);
+    });
+  });
+}
+
+
 module.exports = {
   getLocations,
   getHotelsByLocation,
   createCustomer,
+  checkCustomerUserCredentials,
 };
 
 

@@ -68,16 +68,6 @@
 			loginButton.addEventListener("click", login);
 		});
 
-		function login() {
-			const username = document.getElementById("username").value;
-			const password = document.getElementById("password").value;
-			if (username === "admin" && password === "database") {
-				alert("Login successful!");
-				window.location.href = "Hotel.html";
-			} else {
-				alert("Invalid username or password.");
-			}
-		}
 
 		function toggleSignUp() {
 			const signUpSection = document.querySelector(".signup");
@@ -146,6 +136,39 @@
 				}
 			}
 		}
+
+		async function login() {
+			const username = document.getElementById("username").value;
+			const password = document.getElementById("password").value;
+
+			try {
+				const response = await fetch("/logincustomer", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ username, password }),
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					if (data.isAuthenticated) {
+						alert("Login successful!");
+						window.location.href = "Hotel.html";
+					} else {
+						alert("Invalid username or password.");
+					}
+				} else {
+					alert("Error occurred during login.");
+				}
+			} catch (error) {
+				console.error("Error:", error);
+				alert("Error occurred during login.");
+			}
+		}
+
+
+
 	</script>
 
 	<section class="showcase">
