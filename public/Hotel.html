@@ -1,120 +1,134 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Hotel Booking</title>
-		<link rel="stylesheet" type="text/css" href="Hotel.css" />
-	</head>
 
-	<body>
-		<div class="container">
-			<h1>Hotel Booking</h1>
-			<form>
-				<div class="rating-slider-container">
-					<label for="rating">Rating:</label>
-					<input
-						type="range"
-						min="1"
-						max="5"
-						value="3"
-						class="slider"
-						id="myRange"
-					/>
-					<span id="sliderValue">☆☆☆</span>
-				</div>
+<head>
+	<title>Hotel Booking</title>
+	<link rel="stylesheet" type="text/css" href="Hotel.css" />
+</head>
 
-				<script>
-					var slider = document.getElementById("myRange");
-					var output = document.getElementById("sliderValue");
-					output.innerHTML = "☆☆☆"; // Display the default slider value
+<body>
+	<div class="container">
+		<h1>Hotel Booking</h1>
+		<form>
+			<div class="rating-slider-container">
+				<label for="rating">Rating:</label>
+				<input type="range" min="1" max="5" value="3" class="slider" id="myRange" />
+				<span id="sliderValue">☆☆☆</span>
+			</div>
+			<script>
+				var slider = document.getElementById("myRange");
+				var output = document.getElementById("sliderValue");
+				output.innerHTML = "☆☆☆"; // Display the default slider value
 
-					slider.oninput = function () {
-						output.innerHTML = "☆".repeat(this.value);
-					};
-				</script>
-
-				<div class="location-select">
-					<label for="location">Location:</label>
-					<select id="location">
+				slider.oninput = function () {
+					output.innerHTML = "☆".repeat(this.value);
+				};
+			</script>
+			<div class="location-select">
+				<label for="location">Location:</label>
+				<select id="location">
 					<option value="">-- Select --</option>
-					</select>
-				</div>
-
-				<div class="form-content" style="display: none">
-					<label for="hotels">Hotels:</label>
-					<select id="hotels">
-						<option value="">--- Select ---</option>
-						<option value="hotel1">Hotel1</option>
-						<option value="hotel2">Hotel2</option>
-					</select>
-				</div>
-				<div class="button-search" style="display: none">
-					<a href="SearchLanding.html">
-						<button type="button">Search</button>
-					</a>
-				</div>
-			</form>
-		</div>
-		<!--
-			This script is for getting citys.
-		-->
-		<script>
-			async function fetchLocations() {
-			  try {
+				</select>
+			</div>
+			<div class="form-content" style="display: none">
+				<label for="hotels">Hotels:</label>
+				<select id="hotels">
+					<option value="">--- Select ---</option>
+				</select>
+			</div>
+			<div class="button-search" style="display: none">
+				<a href="SearchLanding.html">
+					<button type="button">Search</button>
+				</a>
+			</div>
+		</form>
+	</div>
+	<!--
+            This script is for getting citys.
+            -->
+	<script>
+		async function fetchLocations() {
+			try {
 				const response = await fetch("/locations");
 				if (!response.ok) {
-				  throw new Error("Failed to fetch locations");
+					throw new Error("Failed to fetch locations");
 				}
-		  
+
 				const locations = await response.json();
 				const locationSelect = document.getElementById("location");
-		  
+
 				locations.forEach((location) => {
-				  const option = document.createElement("option");
-				  option.value = location;
-				  option.textContent = location;
-				  locationSelect.appendChild(option);
+					const option = document.createElement("option");
+					option.value = location;
+					option.textContent = location;
+					locationSelect.appendChild(option);
 				});
-			  } catch (error) {
+
+				locationSelect.addEventListener("change", async function () {
+					const hotelsSelect = document.getElementById("hotels");
+					hotelsSelect.innerHTML = "<option value=''>--- Select ---</option>"; // clear previous options
+
+					if (locationSelect.value !== "") {
+						const response = await fetch(`/hotels?location=${locationSelect.value}`);
+						if (!response.ok) {
+							throw new Error("Failed to fetch hotels");
+						}
+
+						const hotels = await response.json();
+						hotels.forEach((hotel) => {
+							const option = document.createElement("option");
+							option.value = hotel;
+							option.textContent = hotel;
+							hotelsSelect.appendChild(option);
+						});
+
+						formContent.style.display = "block";
+					} else {
+						formContent.style.display = "none";
+					}
+				});
+			} catch (error) {
 				console.error("Error fetching locations:", error);
-			  }
 			}
-		  
-			fetchLocations();
-		  </script>
+		}
 
-		<script>
-			const locationSelect = document.getElementById("location");
-			const formContent = document.querySelector(".form-content");
+		fetchLocations();
 
-			locationSelect.addEventListener("change", function () {
-				if (locationSelect.value !== "") {
-					formContent.style.display = "block";
-				} else {
-					formContent.style.display = "none";
-				}
-			});
-		</script>
+	</script>
 
-		<script>
-			const hotelsSelect = document.getElementById("hotels");
-			const buttonSearch = document.querySelector(".button-search");
+	<script>
+		const locationSelect = document.getElementById("location");
+		const formContent = document.querySelector(".form-content");
 
-			hotelsSelect.addEventListener("change", function () {
-				if (hotelsSelect.value !== "") {
-					buttonSearch.style.display = "block";
-				} else {
-					buttonSearch.style.display = "none";
-				}
-			});
-		</script>
+		locationSelect.addEventListener("change", function () {
+			if (locationSelect.value !== "") {
+				formContent.style.display = "block";
+			} else {
+				formContent.style.display = "none";
+			}
+		});
+	</script>
 
-		<section class="showcase">
-			<div class="overlay">
-				<h2>Booking your next vacation?</h2>
-				<p>It Just Got Easier.</p>
-			</div>
-		</section>
+	<script>
+		const hotelsSelect = document.getElementById("hotels");
+		const buttonSearch = document.querySelector(".button-search");
 
-		<script src="app.js"></script>
-	</body>
+		hotelsSelect.addEventListener("change", function () {
+			if (hotelsSelect.value !== "") {
+				buttonSearch.style.display = "block";
+			} else {
+				buttonSearch.style.display = "none";
+			}
+		});
+	</script>
+	<section class="showcase">
+		<div class="overlay">
+			<h2>Booking your next vacation?</h2>
+			<p>It Just Got Easier.</p>
+		</div>
+	</section>
+
+	<script src="app.js"></script>
+</body>
+
 </html>

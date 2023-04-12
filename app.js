@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path"); // root
-const { getLocations } = require("./functions");
+const { getLocations, getHotelsByLocation } = require("./functions");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,6 +26,18 @@ app.get("/locations", async (req, res) => {
   } catch (error) {
     console.error("Error fetching locations:", error);
     res.status(500).json({ error: "Error fetching locations" });
+  }
+});
+
+// retrieves all hotels that exist in a specified city
+app.get("/hotels", async (req, res) => {
+  const { location } = req.query;
+  try {
+    const hotels = await getHotelsByLocation(location);
+    res.json(hotels);
+  } catch (error) {
+    console.error("Error fetching hotels:", error);
+    res.status(500).json({ error: "Error fetching hotels" });
   }
 });
 
