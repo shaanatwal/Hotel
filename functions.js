@@ -160,6 +160,18 @@ async function checkEmployeeUserCredentials(username, password) {
   });
 }
 
+async function getHotelChainsByHotelId(hotelId) {
+  const query = `SELECT chain_name FROM Hotel_Chain JOIN Hotel ON Hotel_Chain.chain_id = Hotel.chain_id WHERE Hotel.hotel_id = ?`;
+  const results = await new Promise((resolve, reject) => {
+    connection.query(query, [hotelId], (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+  return results.map((row) => row.chain_name);
+}
+
+
 
 
 
@@ -172,6 +184,7 @@ module.exports = {
   getHotelIdByName,
   createEmployee,
   checkEmployeeUserCredentials,
+  getHotelChainsByHotelId,
 };
 
 

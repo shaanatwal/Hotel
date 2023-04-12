@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path"); // root
-const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, checkEmployeeUserCredentials, createEmployee } = require("./functions");
+const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, 
+  checkEmployeeUserCredentials, createEmployee
+ } = require("./functions");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -142,15 +144,16 @@ app.post("/loginemployee", async (req, res) => {
 
 
 app.get("/hotelChains", async (req, res) => {
-  const { hotel_name } = req.query;
+  const { hotel_id } = req.query;
   try {
-    const hotelChains = await getHotelChainsByHotelName(hotel_name);
+    const hotelChains = await getHotelChainsByHotelId(hotel_id);
     res.json(hotelChains);
   } catch (error) {
     console.error("Error fetching hotel chains:", error);
     res.status(500).json({ error: "Error fetching hotel chains" });
   }
 });
+
 
 
 

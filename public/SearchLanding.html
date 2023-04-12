@@ -69,7 +69,8 @@
 		async function fetchHotelChains() {
 			const urlSearchParams = new URLSearchParams(window.location.search);
 			const params = Object.fromEntries(urlSearchParams.entries());
-			const storedHotelId = params.hotel_id; try {
+			const storedHotelId = params.hotel_id;
+			try {
 				const response = await fetch(`/hotelChains?hotel_id=${storedHotelId}`);
 				if (!response.ok) {
 					throw new Error("Failed to fetch hotel chains");
@@ -84,12 +85,21 @@
 					option.textContent = hotelChain;
 					hotelChainSelect.appendChild(option);
 				});
+
 			} catch (error) {
 				console.error("Error fetching hotel chains:", error);
 			}
 		}
 
+
 		fetchHotelChains();
+
+
+		async function getHotels() {
+			// Implement the function to get hotels based on selected filters
+		}
 	</script>
+
+</body>
 
 </html>
