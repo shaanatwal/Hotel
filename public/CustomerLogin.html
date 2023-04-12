@@ -23,7 +23,7 @@
 		</section>
 
 		<section class="signup" style="display: none">
-			<form>
+			<form onsubmit="signUp(event)">
 				<label for="username">Username:</label>
 				<input type="text" id="signup-username" name="username" />
 				<label for="password">Password:</label>
@@ -54,7 +54,7 @@
 				<label for="zip">zip:</label>
 				<input type="text" id="signup-zip" name="zip" />
 
-				<button type="button" onclick="signUp()">Sign Up</button>
+				<button type="submit">Sign Up</button>
 				<br />
 				<button type="button" onclick="toggleSignUp()">Back</button>
 			</form>
@@ -93,7 +93,8 @@
 			}
 		}
 
-		function signUp() {
+		async function signUp(event) {
+			event.preventDefault();
 			const username = document.getElementById("signup-username").value;
 			const password = document.getElementById("signup-password").value;
 			const SSN = document.getElementById("signup-SSN").value;
@@ -105,18 +106,44 @@
 			const province = document.getElementById("signup-province").value;
 			const zip = document.getElementById("signup-zip").value;
 
-			const passwordConfirm = document.getElementById(
-				"signup-password-confirm"
-			).value;
+			const passwordConfirm = document.getElementById("signup-password-confirm").value;
 			if (username === "" || password === "" || passwordConfirm === "" || SSN === "" || name === "" || streetnumber === "" || streetname === "" || buildingnumber === "" || city === "" || province === "" || zip === "") {
 				alert("Please fill in all fields.");
 			} else if (password !== passwordConfirm) {
 				alert("Passwords do not match.");
 			} else {
-				alert("Sign up successful!");
-				document.getElementById("signup-username").value = "";
-				document.getElementById("signup-password").value = "";
-				document.getElementById("signup-password-confirm").value = "";
+				try {
+					const response = await fetch("/signup", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							username,
+							password,
+							SSN,
+							name,
+							streetnumber,
+							streetname,
+							buildingnumber,
+							city,
+							province,
+							zip,
+						}),
+					});
+
+					if (response.ok) {
+						alert("Sign up successful!");
+						document.getElementById("signup-username").value = "";
+						document.getElementById("signup-password").value = "";
+						document.getElementById("signup-password-confirm").value = "";
+					} else {
+						alert("Error occurred during sign up.");
+					}
+				} catch (error) {
+					console.error("Error:", error);
+					alert("Error occurred during sign up.");
+				}
 			}
 		}
 	</script>

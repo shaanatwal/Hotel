@@ -25,10 +25,55 @@ async function getHotelsByLocation(location, rating) {
   return results.map((row) => row.hotel_name);
 }
 
+async function createCustomer(
+  username,
+  password,
+  SSN,
+  name,
+  streetnumber,
+  streetname,
+  buildingnumber,
+  city,
+  province,
+  zip
+) {
+  const customer_id = Math.floor(Math.random() * 1000000);
+  const booking_id = null;
+  const renting_id = null;
+  const date_of_registration = new Date().toISOString().slice(0, 10);
 
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO Customer (customer_id, customer_username, customer_password, booking_id, renting_id, SSN, customer_name, street_number, street_name, building_number, city, province, zip, date_of_registration)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    connection.query(sql, [
+      customer_id,
+      username,
+      password,
+      booking_id,
+      renting_id,
+      SSN,
+      name,
+      streetnumber,
+      streetname,
+      buildingnumber,
+      city,
+      province,
+      zip,
+      date_of_registration
+    ], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
 
 
 module.exports = {
   getLocations,
   getHotelsByLocation,
+  createCustomer,
 };
+
+

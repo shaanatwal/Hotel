@@ -1,11 +1,12 @@
 const express = require("express");
 const path = require("path"); // root
-const { getLocations, getHotelsByLocation } = require("./functions");
+const { getLocations, getHotelsByLocation, createCustomer } = require("./functions");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
@@ -17,6 +18,43 @@ app.post("/submit", (req, res) => {
   // Process the selected location as needed
   res.send(`Selected location: ${selectedLocation}`);
 });
+
+app.post("/signup", async (req, res) => {
+  try {
+    const {
+      username,
+      password,
+      SSN,
+      name,
+      streetnumber,
+      streetname,
+      buildingnumber,
+      city,
+      province,
+      zip,
+    } = req.body;
+
+    await createCustomer(
+      username,
+      password,
+      SSN,
+      name,
+      streetnumber,
+      streetname,
+      buildingnumber,
+      city,
+      province,
+      zip
+    );
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error creating customer:", error);
+    res.status(500).json({ error: "Error creating customer" });
+  }
+});
+
+
 
 // retrieves all unique city names
 app.get("/locations", async (req, res) => {
