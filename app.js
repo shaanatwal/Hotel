@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path"); // root
-const { getLocations, getHotelsByLocation, createCustomer, checkCustomerUserCredentials } = require("./functions");
+const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName } = require("./functions");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -90,6 +90,20 @@ app.post("/logincustomer", async (req, res) => {
     res.status(500).json({ error: "Error authenticating user" });
   }
 });
+
+
+app.get("/hotelChains", async (req, res) => {
+  const { hotel_name } = req.query;
+  try {
+    const hotelChains = await getHotelChainsByHotelName(hotel_name);
+    res.json(hotelChains);
+  } catch (error) {
+    console.error("Error fetching hotel chains:", error);
+    res.status(500).json({ error: "Error fetching hotel chains" });
+  }
+});
+
+
 
 
 app.listen(port, () => {

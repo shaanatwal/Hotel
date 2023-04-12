@@ -15,15 +15,16 @@ function getLocations() {
 
 // Update the getHotelsByLocation function to include the rating parameter:
 async function getHotelsByLocation(location, rating) {
-  const query = `SELECT hotel_name FROM Hotel WHERE city = ? AND category_hotel = ?`;
+  const query = `SELECT hotel_name, hotel_id FROM Hotel WHERE city = ? AND category_hotel = ?`;
   const results = await new Promise((resolve, reject) => {
     connection.query(query, [location, rating], (err, results) => {
       if (err) reject(err);
       else resolve(results);
     });
   });
-  return results.map((row) => row.hotel_name);
+  return results.map((row) => ({ name: row.hotel_name, id: row.hotel_id }));
 }
+
 
 async function createCustomer(
   username,
@@ -82,12 +83,40 @@ async function checkCustomerUserCredentials(username, password) {
   });
 }
 
+async function getHotelChainsByHotelName(hotelName) {
+  const query = `SELECT chain_name FROM Hotel_Chain JOIN Hotel ON Hotel_Chain.chain_id = Hotel.chain_id WHERE Hotel.hotel_name = ?`;
+  const results = await new Promise((resolve, reject) => {
+    connection.query(query, [hotelName], (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+  return results.map((row) => row.chain_name);
+}
+
+
+
+async function getHotelIdByName(hotelName) {
+  const query = `SELECT hotel_id FROM Hotel WHERE hotel_name = ?`;
+  const results = await new Promise((resolve, reject) => {
+    connection.query(query, [hotelName], (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+  return results[0].hotel_id;
+}
+
+
+
 
 module.exports = {
   getLocations,
   getHotelsByLocation,
   createCustomer,
   checkCustomerUserCredentials,
+  getHotelChainsByHotelName,
+  getHotelIdByName,
 };
 
 

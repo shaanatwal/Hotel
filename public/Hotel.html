@@ -28,15 +28,13 @@
 				</select>
 			</div>
 			<div class="button-search" style="display: none">
-				<a href="SearchLanding.html">
-					<button type="button">Search</button>
-				</a>
+				<button type="button">Search</button>
 			</div>
 		</form>
 	</div>
 	<!--
-            This script is for getting citys.
-            -->
+        This script is for getting cities.
+    -->
 	<script>
 		async function fetchLocations() {
 			try {
@@ -76,8 +74,8 @@
 				const hotels = await response.json();
 				hotels.forEach((hotel) => {
 					const option = document.createElement("option");
-					option.value = hotel;
-					option.textContent = hotel;
+					option.value = hotel.id;
+					option.textContent = hotel.name;
 					hotelsSelect.appendChild(option);
 				});
 
@@ -86,6 +84,7 @@
 				formContent.style.display = "none";
 			}
 		}
+
 
 		fetchLocations();
 	</script>
@@ -112,20 +111,27 @@
 				formContent.style.display = "none";
 			}
 		});
-	</script>
 
-	<script>
 		const hotelsSelect = document.getElementById("hotels");
 		const buttonSearch = document.querySelector(".button-search");
+		const searchButton = buttonSearch.querySelector("button");
 
 		hotelsSelect.addEventListener("change", function () {
 			if (hotelsSelect.value !== "") {
 				buttonSearch.style.display = "block";
+				searchButton.onclick = function () {
+					const selectedHotelId = hotelsSelect.options[hotelsSelect.selectedIndex].value;
+					localStorage.setItem("selectedHotelId", selectedHotelId);
+					window.location.href = `SearchLanding.html?hotel_id=${selectedHotelId}`;
+				};
+
 			} else {
 				buttonSearch.style.display = "none";
 			}
 		});
+
 	</script>
+
 	<section class="showcase">
 		<div class="overlay">
 			<h2>Booking your next vacation?</h2>
