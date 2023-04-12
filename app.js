@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path"); // root
-const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName } = require("./functions");
+const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, checkEmployeeUserCredentials, createEmployee } = require("./functions");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,6 +17,44 @@ app.post("/submit", (req, res) => {
   const selectedLocation = req.body.location;
   // Process the selected location as needed
   res.send(`Selected location: ${selectedLocation}`);
+});
+
+app.post("/employeesignup", async (req, res) => {
+  try {
+    const {
+      username,
+      password,
+      SSN,
+      hotel_id,
+      hotel_name,
+      employee_name,
+      street_number,
+      street_name,
+      city,
+      province,
+      job_role,
+    } = req.body;
+
+    // Create the employee using the provided data
+    await createEmployee(
+      username,
+      password,
+      SSN,
+      hotel_id,
+      hotel_name,
+      employee_name,
+      street_number,
+      street_name,
+      city,
+      province,
+      job_role,
+    );
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error creating employee:", error);
+    res.status(500).json({ error: "Error creating employee" });
+  }
 });
 
 app.post("/signup", async (req, res) => {
@@ -84,6 +122,17 @@ app.post("/logincustomer", async (req, res) => {
   const { username, password } = req.body;
   try {
     const isAuthenticated = await checkCustomerUserCredentials(username, password);
+    res.status(200).json({ isAuthenticated });
+  } catch (error) {
+    console.error("Error authenticating user:", error);
+    res.status(500).json({ error: "Error authenticating user" });
+  }
+});
+
+app.post("/loginemployee", async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const isAuthenticated = await checkEmployeeUserCredentials(username, password);
     res.status(200).json({ isAuthenticated });
   } catch (error) {
     console.error("Error authenticating user:", error);

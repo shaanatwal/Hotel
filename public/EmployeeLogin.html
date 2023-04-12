@@ -1,101 +1,188 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Hotel Booking</title>
-		<link rel="stylesheet" type="text/css" href="Hotel.css" />
-	</head>
 
-	<body>
-		<div class="container">
-			<h1 id="title">Hotel Employee Login</h1>
-			<section class="login">
-				<form>
-					<label for="username">Username:</label>
-					<input type="text" id="username" name="username" />
-					<label for="password">Password:</label>
-					<input type="password" id="password" name="password" />
-					<button type="button">Login</button>
+<head>
+	<title>Hotel Booking</title>
+	<link rel="stylesheet" type="text/css" href="Hotel.css" />
+</head>
 
-					<br />
-					<button type="button" onclick="toggleSignUp()">Sign Up</button>
-				</form>
-			</section>
+<body>
+	<div class="container">
+		<h1 id="title">Hotel Employee Login</h1>
+		<section class="login">
+			<form>
+				<label for="username">Username:</label>
+				<input type="text" id="username" name="username" />
+				<label for="password">Password:</label>
+				<input type="password" id="password" name="password" />
+				<button type="button">Login</button>
 
-			<section class="signup" style="display: none">
-				<form>
-					<label for="username">Username:</label>
-					<input type="text" id="signup-username" name="username" />
-					<label for="password">Password:</label>
-					<input type="password" id="signup-password" name="password" />
-					<label for="password-confirm">Confirm Password:</label>
-					<input
-						type="password"
-						id="signup-password-confirm"
-						name="password-confirm"
-					/>
-					<button type="button" onclick="signUp()">Sign Up</button>
-					<br />
-					<button type="button" onclick="toggleSignUp()">Back</button>
-				</form>
-			</section>
-		</div>
-
-		<script src="app.js"></script>
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-				const loginButton = document.querySelector("button[type='button']");
-				loginButton.addEventListener("click", login);
-			});
-
-			function login() {
-				const username = document.getElementById("username").value;
-				const password = document.getElementById("password").value;
-				if (username === "admin" && password === "database") {
-					alert("Login successful!");
-					window.location.href = "EmployeePage.html";
-				} else {
-					alert("Invalid username or password.");
-				}
-			}
-
-			function toggleSignUp() {
-				const signUpSection = document.querySelector(".signup");
-				const loginSection = document.querySelector(".login");
-				if (signUpSection.style.display === "none") {
-					signUpSection.style.display = "block";
-					loginSection.style.display = "none";
-					document.getElementById("title").innerText = "Hotel Employee Signup";
-				} else {
-					signUpSection.style.display = "none";
-					loginSection.style.display = "block";
-					document.getElementById("title").innerText = "Hotel Employee Login";
-				}
-			}
-
-			function signUp() {
-				const username = document.getElementById("signup-username").value;
-				const password = document.getElementById("signup-password").value;
-				const passwordConfirm = document.getElementById(
-					"signup-password-confirm"
-				).value;
-				if (username === "" || password === "" || passwordConfirm === "") {
-					alert("Please fill in all fields.");
-				} else if (password !== passwordConfirm) {
-					alert("Passwords do not match.");
-				} else {
-					alert("Sign up successful!");
-					document.getElementById("signup-username").value = "";
-					document.getElementById("signup-password").value = "";
-					document.getElementById("signup-password-confirm").value = "";
-				}
-			}
-		</script>
-
-		<section class="showcase">
-			<div class="overlay">
-				<h2>Booking your next vacation</h2>
-				<p>Just Got Simpler.</p>
-			</div>
+				<br />
+				<button type="button" onclick="toggleSignUp()">Sign Up</button>
+			</form>
 		</section>
-	</body>
+
+		<section class="signup" style="display: none">
+			<form onsubmit="signUp(event)">
+				<label for="username">Username:</label>
+				<input type="text" id="signup-username" name="username" />
+				<label for="password">Password:</label>
+				<input type="password" id="signup-password" name="password" />
+				<label for="password-confirm">Confirm Password:</label>
+				<input type="password" id="signup-password-confirm" name="password-confirm" />
+
+				<label for="SSN">SSN:</label>
+				<input type="text" id="signup-SSN" name="SSN" />
+
+				<label for="employee_name">name:</label>
+				<input type="text" id="signup-employee_name" name="employee_name" />
+
+				<label for="hotel_id">hotel id:</label>
+				<input type="text" id="signup-hotel_id" name="hotel_id" />
+
+				<label for="hotel_name">hotel name:</label>
+				<input type="text" id="signup-hotel_name" name="hotel_name" />
+
+				<label for="street_number">street number:</label>
+				<input type="text" id="signup-street_number" name="street_number" />
+
+				<label for="street_name">street name:</label>
+				<input type="text" id="signup-street_name" name="street_name" />
+
+				<label for="job_role,">Job Role:</label>
+				<input type="text" id="signup-job_role" name="job_role" />
+
+				<label for="city">city:</label>
+				<input type="text" id="signup-city" name="city" />
+
+				<label for="province">province:</label>
+				<input type="text" id="signup-province" name="province" />
+
+				<button type="submit">Sign Up</button>
+				<br />
+				<button type="button" onclick="toggleSignUp()">Back</button>
+			</form>
+		</section>
+	</div>
+
+	<script src="app.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const loginButton = document.querySelector("button[type='button']");
+			loginButton.addEventListener("click", login);
+		});
+
+
+		function toggleSignUp() {
+			const signUpSection = document.querySelector(".signup");
+			const loginSection = document.querySelector(".login");
+			if (signUpSection.style.display === "none") {
+				signUpSection.style.display = "block";
+				loginSection.style.display = "none";
+				document.getElementById("title").innerText = "Hotel Employee Signup";
+			} else {
+				signUpSection.style.display = "none";
+				loginSection.style.display = "block";
+				document.getElementById("title").innerText = "Hotel Employee Login";
+			}
+		}
+
+		async function signUp(event) {
+			event.preventDefault();
+			const username = document.getElementById("signup-username").value;
+			const password = document.getElementById("signup-password").value;
+			const SSN = document.getElementById("signup-SSN").value;
+			const hotel_id = document.getElementById("signup-hotel_id").value;
+			const hotel_name = document.getElementById("signup-hotel_name").value;
+			const employee_name = document.getElementById("signup-employee_name").value;
+			const street_number = document.getElementById("signup-street_number").value;
+			const street_name = document.getElementById("signup-street_name").value;
+			const city = document.getElementById("signup-city").value;
+			const province = document.getElementById("signup-province").value;
+			const job_role = document.getElementById("signup-job_role").value;
+
+			const passwordConfirm = document.getElementById("signup-password-confirm").value;
+			if (username === "" || password === "" || passwordConfirm === "" || SSN === "" || employee_name === "" || hotel_id === "" || hotel_name === "" || job_role === "" || street_number === "" || street_name === "" || city === "" || province === "") {
+				alert("Please fill in all fields.");
+			} else if (password !== passwordConfirm) {
+				alert("Passwords do not match.");
+			} else {
+				try {
+					const response = await fetch("/employeesignup", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							username,
+							password,
+							SSN,
+							hotel_id,
+							hotel_name,
+							employee_name,
+							street_number,
+							street_name,
+							city,
+							province,
+							job_role,
+						}),
+					});
+
+					if (response.ok) {
+						alert("Sign up successful!");
+						document.getElementById("signup-username").value = "";
+						document.getElementById("signup-password").value = "";
+						document.getElementById("signup-password-confirm").value = "";
+					} else {
+						alert("Error occurred during sign up.");
+					}
+				} catch (error) {
+					console.error("Error:", error);
+					alert("Error occurred during sign up.");
+				}
+			}
+		}
+
+		async function login() {
+			const username = document.getElementById("username").value;
+			const password = document.getElementById("password").value;
+
+			try {
+				const response = await fetch("/loginemployee", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ username, password }),
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					if (data.isAuthenticated) {
+						alert("Login successful!");
+						window.location.href = "EmployeePage.html";
+					} else {
+						alert("Invalid username or password.");
+					}
+				} else {
+					alert("Error occurred during login.");
+				}
+			} catch (error) {
+				console.error("Error:", error);
+				alert("Error occurred during login.");
+			}
+		}
+
+
+
+	</script>
+
+	<section class="showcase">
+		<div class="overlay">
+			<h2>Booking your next vacation</h2>
+			<p>Just Got Simpler.</p>
+		</div>
+	</section>
+</body>
+
 </html>

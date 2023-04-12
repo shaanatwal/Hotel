@@ -1,5 +1,5 @@
 -- Uncomment whenever you start from a new location.
--- CREATE DATABASE hotel_deliverable; 
+ CREATE DATABASE hotel_deliverable; 
 USE hotel_deliverable; # we'll be calling our database hotel_deliverable 
 
 -- After running everything, uncomment this to allow the node to run.
@@ -50,6 +50,8 @@ CREATE TABLE Room (
 
 CREATE TABLE Employee (
   employee_id INT PRIMARY KEY NOT NULL,
+  employee_username VARCHAR(255) NOT NULL,
+  employee_password VARCHAR(255) NOT NULL,
   hotel_id INT NOT NULL,
   hotel_name VARCHAR(255) NOT NULL,
   employee_name VARCHAR(255) NOT NULL,
@@ -174,13 +176,14 @@ INSERT INTO Hotel (hotel_id, chain_id, hotel_name, street_number, street_name, b
 (39, 5, 'Four Seasons San Francisco', 70, 'Market St', NULL, 'San Francisco', 'CA', '94102', 3, 350, '555-7777', 'fourseasonssf@gmail.com'),
 (40, 5, 'Four Seasons Las Vegas', 80, 'Las Vegas Blvd', NULL, 'Las Vegas', 'NV', '89109', 4, 600, '555-8888', 'fourseasonslv@gmail.com');
 
-INSERT INTO Employee (employee_id, hotel_id, hotel_name, employee_name, street_number, street_name, city, province, SSN, job_role) VALUES 
-(1, 1, 'Marriott Downtown', 'John Smith', 1234, 'Main St', 'Toronto', 'Ontario', '123-456-789', 'Front Desk Clerk'),
-(2, 2, 'Hilton Downtown', 'Jane Doe', 5678, 'Elm St', 'Vancouver', 'British Columbia', '987-654-321', 'Housekeeping'),
-(3, 2, 'Marriott Midtown', 'Bob Johnson', 2468, 'Oak St', 'Calgary', 'Alberta', '111-222-333', 'Restaurant Server'),
-(4, 4, 'Hilton Midtown', 'Jane Doe', 5678, 'Elm St', 'Vancouver', 'British Columbia', '987-654-321', 'Housekeeping'),
-(5, 4, 'Hilton Midtown', 'John Paul', 1234, 'Elmer Ave', 'Vancouver', 'British Columbia', '947-555-955', 'Housekeeping'),
-(6, 5, 'Hyatt Downtown', 'Bob Johnson', 2468, 'Oak St', 'Calgary', 'Alberta', '111-222-333', 'Restaurant Server');
+
+INSERT INTO Employee (employee_id, employee_username, employee_password, hotel_id, hotel_name, employee_name, street_number, street_name, city, province, SSN, job_role) VALUES 
+(1, 'user1', 'pass', 1, 'Marriott Downtown', 'John Smith', 1234, 'Main St', 'Toronto', 'Ontario', '123-456-789', 'Front Desk Clerk'),
+(2, 'user2', 'pass', 2, 'Hilton Downtown', 'Jane Doe', 5678, 'Elm St', 'Vancouver', 'British Columbia', '987-654-321', 'Housekeeping'),
+(3, 'user3', 'pass', 2, 'Marriott Midtown', 'Bob Johnson', 2468, 'Oak St', 'Calgary', 'Alberta', '111-222-333', 'Restaurant Server'),
+(4, 'user4', 'pass', 4, 'Hilton Midtown', 'Jane Doe', 5678, 'Elm St', 'Vancouver', 'British Columbia', '987-654-321', 'Housekeeping'),
+(5, 'user5', 'pass', 4, 'Hilton Midtown', 'John Paul', 1234, 'Elmer Ave', 'Vancouver', 'British Columbia', '947-555-955', 'Housekeeping'),
+(6, 'user6', 'pass', 5, 'Hyatt Downtown', 'Bob Johnson', 2468, 'Oak St', 'Calgary', 'Alberta', '111-222-333', 'Restaurant Server');
 
 
 INSERT INTO Room (room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages) VALUES 
@@ -206,5 +209,5 @@ INSERT INTO Booking (booking_id, room_id, employee_id, customer_id, capacity, pr
  (5, 5, 5, 8, 2, 120.00, 'WiFi, TV, Pool', 'Garden View', 1, '2023-09-05', '2023-09-09', 4);
 
 
-select * from Customer
+select * from Employee
 

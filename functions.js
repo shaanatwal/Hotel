@@ -107,6 +107,59 @@ async function getHotelIdByName(hotelName) {
   return results[0].hotel_id;
 }
 
+async function createEmployee(
+  username,
+  password,
+  SSN,
+  hotel_id,
+  hotel_name,
+  employee_name,
+  street_number,
+  street_name,
+  city,
+  province,
+  job_role,
+) {
+  const employee_id = Math.floor(Math.random() * 1000000);
+
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO Employee (employee_id, employee_username, employee_password, SSN, hotel_id, hotel_name, employee_name, street_number, street_name, city, province, job_role)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    connection.query(sql, [
+      employee_id,
+      username,
+      password,
+      SSN,
+      hotel_id,
+      hotel_name,
+      employee_name,
+      street_number,
+      street_name,
+      city,
+      province,
+      job_role,
+    ], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+async function checkEmployeeUserCredentials(username, password) {
+  const sql2 = "SELECT * FROM Employee WHERE employee_username = ? AND employee_password = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql2, [username, password], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results.length > 0);
+    });
+  });
+}
+
 
 
 
@@ -117,6 +170,8 @@ module.exports = {
   checkCustomerUserCredentials,
   getHotelChainsByHotelName,
   getHotelIdByName,
+  createEmployee,
+  checkEmployeeUserCredentials,
 };
 
 
