@@ -171,6 +171,28 @@ async function getHotelChainsByHotelId(hotelId) {
   return results.map((row) => row.chain_name);
 }
 
+async function getRoomViews(hotel_id) {
+  const query = `SELECT DISTINCT room_view FROM Room WHERE hotel_id = ?`;
+  const results = await new Promise((resolve, reject) => {
+    connection.query(query, [hotel_id], (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+  return results.map((row) => row.room_view);
+}
+
+async function getCapacities(hotel_id) {
+  const query = `SELECT DISTINCT capacity FROM Room WHERE hotel_id = ?`;
+  const results = await new Promise((resolve, reject) => {
+    connection.query(query, [hotel_id], (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+  return results.map((row) => row.capacity);
+}
+
 
 
 
@@ -185,6 +207,8 @@ module.exports = {
   createEmployee,
   checkEmployeeUserCredentials,
   getHotelChainsByHotelId,
+  getRoomViews,
+  getCapacities,
 };
 
 
