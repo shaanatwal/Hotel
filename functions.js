@@ -287,6 +287,84 @@ async function removeCustomer (customer_id) {
   });
 }
 
+async function removeRoom(room_id) {
+  const sql = "DELETE FROM Room WHERE room_id = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [room_id], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+async function removeHotel(hotel_id) {
+  const sql = "DELETE FROM Hotel WHERE hotel_id = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [hotel_id], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+async function createHotel(
+  hotel_id,
+  chain_id,
+  hotel_name,
+  street_number,
+  street_name,
+  building_number,
+  city,
+  province,
+  zip,
+  category_hotel,
+  number_of_rooms,
+  phone_number,
+  email_address
+) {
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO Hotel (hotel_id, chain_id, hotel_name, street_number, street_name, building_number, city, province, zip, category_hotel, number_of_rooms, phone_number, email_address)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    connection.query(sql, [
+      hotel_id,
+      chain_id,
+      hotel_name,
+      street_number,
+      street_name,
+      building_number,
+      city,
+      province,
+      zip,
+      category_hotel,
+      number_of_rooms,
+      phone_number,
+      email_address
+    ], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+async function createRoom(room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages) {
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO Room (room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    connection.query(sql, [room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
 
 
 
@@ -307,6 +385,10 @@ module.exports = {
   createBooking,
   removeCustomer,
   removeEmployee,
+  removeRoom,
+  removeHotel,
+  createHotel,
+  createRoom
 };
 
 

@@ -1,7 +1,8 @@
 body {
-	background-image: url("res/beach.png");
-	background-size: cover;
-	background-position: center;
+	background-image: url("res/hotel.jpg");
+	background-size: auto;
+	background-position: auto, cover;
+	background-repeat: repeat-x;
 	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
 		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
@@ -155,7 +156,6 @@ button {
 	margin-bottom: 5px;
 }
 
-#hotel-chain,
 #amenities,
 #room-view,
 #capacity,
@@ -187,74 +187,3 @@ button {
 .location-select select {
 	z-index: 9999;
 }
-
-.rating-slider-container {
-	width: 40%; /* Width of the outside container */
-	z-index: 9999;
-}
-
-/* The slider itself */
-.slider {
-	-webkit-appearance: none; /* Override default CSS styles */
-	appearance: none;
-	width: 100%; /* Full-width */
-	height: 25px; /* Specified height */
-	border-radius: 5px;
-	background: #d3d3d3; /* Grey background */
-	outline: none; /* Remove outline */
-	opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-	-webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
-	transition: opacity 0.2s;
-}
-
-/* Mouse-over effects */
-.slider:hover {
-	opacity: 1; /* Fully shown on mouse-over */
-}
-
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-.slider::-webkit-slider-thumb {
-	-webkit-appearance: none; /* Override default look */
-	appearance: none;
-	width: 25px; /* Set a specific slider handle width */
-	height: 25px; /* Slider handle height */
-	background: #dc6536; /* Green background */
-	cursor: pointer; /* Cursor on hover */
-	border-radius: 50%;
-}
-
-.slider::-moz-range-thumb {
-	width: 25px; /* Set a specific slider handle width */
-	height: 25px; /* Slider handle height */
-	background: #e8b866; /* Green background */
-	cursor: pointer; /* Cursor on hover */
-}
-
-.button-search {
-	z-index: 9999;
-}
-
-#results-container {
-
-	background:#d3d3d3;
-	margin-top: 200px;
-	border: 1px solid #c7c;
-	border-radius: 5px;
-	padding: 10px;
-	box-shadow: 2px 2px 5px #a0c940;
-	margin-bottom: 20px;
-
-  }
-
-  #book-room-btn {
-	background-color: #5b97f1;
-	font-size: 16px;
-	padding: 12px 24px;
-	border-radius: 5px;
-	border: none;
-	transition: background-color 0.3s ease;
-  }
-  
-  #book-room-btn:hover {
-	background-color: #073488;
-  }

@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path"); // root
 const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, 
-  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeCustomer, removeEmployee
+  checkEmployeeUserCredentials, createEmployee,  getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeRoom, createRoom, removeCustomer, removeHotel, createHotel, removeEmployee
  } = require("./functions");
 
 const app = express();
@@ -241,7 +241,84 @@ app.delete("/deletecustomer", async (req, res) => {
   }
 });
 
+app.delete("/deleteroom", async (req, res) => {
+  try {
+    const { room_id } = req.body;
+    await removeRoom(room_id);
+    res.sendStatus(200);
+  }
+  catch (error) {
+    console.error("Error deleting room:", error);
+    res.status(500).json({ error: "Error deleting room" });
+  }
+});
 
+app.delete("/deletehotel", async (req, res) => {
+  try {
+    const { hotel_id } = req.body;
+    await removeHotel(hotel_id);
+    res.sendStatus(200);
+  }
+  catch (error) {
+    console.error("Error deleting hotel:", error);
+    res.status(500).json({ error: "Error deleting hotel" });
+  }
+});
+
+app.post("/addhotel", async (req, res) => {
+  try {
+    const {
+      hotel_id,
+      chain_id,
+      hotel_name,
+      street_number,
+      street_name,
+      building_number,
+      city,
+      province,
+      zip,
+      category_hotel,
+      number_of_rooms,
+      phone_number,
+      email_address,
+    } = req.body;
+
+    await createHotel(
+      hotel_id,
+      chain_id,
+      hotel_name,
+      street_number,
+      street_name,
+      building_number,
+      city,
+      province,
+      zip,
+      category_hotel,
+      number_of_rooms,
+      phone_number,
+      email_address
+    );
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error creating hotel:", error);
+    res.status(500).json({ error: "Error creating hotel" });
+  }
+});
+
+app.post("/addroom", async (req, res) => {
+  try {
+    const { room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages } = req.body;
+
+    // Create the room using the provided data
+    await createRoom(room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages);
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error adding room:", error);
+    res.status(500).json({ error: "Error adding room" });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
