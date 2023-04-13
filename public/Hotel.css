@@ -245,3 +245,16 @@ button {
 	margin-bottom: 20px;
 
   }
+
+  #book-room-btn {
+	background-color: #5b97f1;
+	font-size: 16px;
+	padding: 12px 24px;
+	border-radius: 5px;
+	border: none;
+	transition: background-color 0.3s ease;
+  }
+  
+  #book-room-btn:hover {
+	background-color: #073488;
+  }

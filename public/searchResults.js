@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (response.ok) {
         const rooms = await response.json();
         displayRooms(rooms);
+        populateRoomDropdown(rooms);
       } else {
         console.error("Error searching rooms");
       }
@@ -41,3 +42,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       resultsContainer.appendChild(roomElement);
     });
   }
+  
+  function populateRoomDropdown(rooms) {
+    const dropdown = document.getElementById("book-id");
+    rooms.forEach((room) => {
+      const option = document.createElement("option");
+      option.value = room.room_id;
+      option.textContent = `Room ${room.room_id}`;
+      dropdown.appendChild(option);
+    });
+  }
+  
