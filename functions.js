@@ -231,34 +231,58 @@ async function searchRooms(hotelId, capacity, amenities, roomView, extended) {
   });
 }
 
-async function createBooking(customerId, roomId, capacity, price, amenities, roomView, roomExtended, startDate, endDate, numberOfDays) {
-  const bookingId = Math.floor(Math.random() * 1000000);
-
+async function createBooking(
+  customer_id,
+  hotel_id,
+  room_number,
+  check_in_date,
+  check_out_date,
+  price,
+  amenities,
+  capacity,
+  room_view
+) {
   return new Promise((resolve, reject) => {
-    const sql = `
-      INSERT INTO Booking
-        (booking_id, room_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, number_of_days)
-      VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-    connection.query(sql, [
-      bookingId,
-      roomId,
-      customerId,
-      capacity,
-      price,
-      amenities,
-      roomView,
-      roomExtended,
-      startDate,
-      endDate,
-      numberOfDays
-    ], (err, results) => {
-      if (err) {
-        return reject(err);
+    // Assuming you have a roomId from hotel_id and room_number
+    const roomId = null; // Replace with your logic to get roomId
+
+    // Assuming you have an employeeId from the hotel_id
+    const employeeId = null; // Replace with your logic to get employeeId
+
+    const roomExtended = true; // Replace with your logic to get roomExtended
+
+    const startDate = new Date(check_in_date);
+    const endDate = new Date(check_out_date);
+    const numberOfDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+    const bookingId = Math.floor(100000 + Math.random() * 900000);
+
+    const sqlQuery = `INSERT INTO Booking (booking_id, room_id, employee_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, number_of_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    connection.query(
+      sqlQuery,
+      [
+        bookingId,
+        roomId,
+        employeeId,
+        customer_id,
+        capacity,
+        price,
+        amenities,
+        room_view,
+        roomExtended,
+        startDate,
+        endDate,
+        numberOfDays,
+      ],
+      (error, result) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(result);
       }
-      resolve(results);
-    });
+    );
   });
 }
 

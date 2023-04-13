@@ -1,5 +1,9 @@
+const urlParams = new URLSearchParams(window.location.search);
+
 document.addEventListener("DOMContentLoaded", async () => {
-  const urlParams = new URLSearchParams(window.location.search);
+  displayUrlParameters(urlParams);
+  console.log(urlParams.getAll);
+
   const hotelId = urlParams.get("hotel_id");
   const capacity = urlParams.get("capacity");
   const amenities = urlParams.get("amenities");
@@ -25,48 +29,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error("Error searching rooms:", error);
   }
-
-  const bookRoomForm = document.getElementById("Book_Room");
-  bookRoomForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const roomId = document.getElementById("book-id").value;
-    const checkInDate = urlParams.get("checkin");
-    const checkOutDate = urlParams.get("checkout");
-    const customerId = localStorage.getItem("customerId");
-    const price = urlParams.get("price");
-    const amenities =urlParams.get("amenities");
-    const capacity = urlParams.get("capacity");
-
-    try {
-      const response = await fetch("/bookings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          customer_id: customerId,
-          hotel_id: hotelId,
-          room_number: roomId,
-          check_in_date: checkInDate,
-          check_out_date: checkOutDate,
-          price: price,
-          amenities: amenities,
-          capacity: capacity
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        alert(data.message);
-        // Redirect to the main page after booking
-        window.location.href = "/MainPage.html";
-      } else {
-        console.error("Error creating booking");
-      }
-    } catch (error) {
-      console.error("Error creating booking:", error);
-    }
-  });
 });
 
 function displayRooms(rooms) {
@@ -85,48 +47,56 @@ function displayRooms(rooms) {
     resultsContainer.appendChild(roomElement);
   });
 
-  // Add event listener to book room buttons
-  const bookRoomBtns = document.querySelectorAll(".book-room-btn");
-  bookRoomBtns.forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      alert('Booking Created');
-      const customerId = localStorage.getItem("customerId");
-      const roomId = btn.dataset.roomId;
-      const hotelId = btn.dataset.hotelId;
-      const startDate = urlParams.get("checkin");
-      const endDate = urlParams.get("checkout");
-      const price = await getPrice(roomId, startDate, endDate);
-      const amenities = await getAmenitiesByRoomId(roomId);
-      const capacity = await getCapacityByRoomId(roomId);
-      try {
-        const response = await fetch("/bookings", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            customer_id: customerId,
-            hotel_id: hotelId,
-            room_number: roomId,
-            check_in_date: startDate,
-            check_out_date: endDate,
-            price: price,
-            amenities: amenities,
-            capacity: capacity,
-          }),
-        });
-        if (response.ok) {
-          const data = await response.json();
-          alert('Booking Created');
-        } else {
-          console.error("Error creating booking");
-        }
-      } catch (error) {
-        console.error("Error creating booking:", error);
-      }
-    });
+// Add event listener to book room buttons
+const bookRoomBtns = document.querySelectorAll(".book-room-btn");
+bookRoomBtns.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const roomId = rooms[0].room_id;
+    const firstRoomPrice = rooms[0].price;
+    createBooking(roomId, firstRoomPrice);
   });
+});
+
 }
+
+async function createBooking(roomId,price) {
+  const startDate = urlParams.get("checkin");
+  const endDate = urlParams.get("checkout");
+  const customerId = localStorage.getItem("customerId");
+  const hotelId = urlParams.get("hotel_id");
+  const capacity = urlParams.get("capacity");
+  const amenities = urlParams.get("amenities");
+  const roomView = urlParams.get("room_view");
+
+  try {
+    const response = await fetch("/bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        customer_id: customerId,
+        hotel_id: hotelId,
+        room_number: roomId,
+        check_in_date: startDate,
+        check_out_date: endDate,
+        price: price,
+        amenities: amenities,
+        capacity: capacity,
+        room_view: roomView
+      }),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      alert('Booking Created');
+    } else {
+      console.error("Error creating booking");
+    }
+  } catch (error) {
+    console.error("Error creating booking:", error);
+  }
+}
+
 
 async function getPrice(roomId, startDate, endDate) {
   try {
@@ -142,30 +112,22 @@ async function getPrice(roomId, startDate, endDate) {
   }
 }
 
-async function getAmenitiesByRoomId(roomId) {
-  try {
-    const response = await fetch(`/rooms/${roomId}/amenities`);
-    if (response.ok) {
-      const data = await response.json();
-      return data.amenities;
-    } else {
-      console.error("Error getting room amenities");
-    }
-  } catch (error) {
-    console.error("Error getting room amenities:", error);
-  }
-}
+function displayUrlParameters(urlParams) {
+  const resultsContainer = document.getElementById("results-container");
 
-async function getCapacityByRoomId(roomId) {
-  try {
-    const response = await fetch(`/rooms/${roomId}/capacity`);
-    if (response.ok) {
-      const data = await response.json();
-      return data.capacity;
-    } else {
-      console.error("Error getting room capacity");
-    }
-  } catch (error) {
-    console.error("Error getting room capacity:", error);
-  }
+  const urlParamsList = document.createElement("ul");
+  urlParamsList.innerHTML = `
+    <li>Hotel Chain: ${urlParams.get("hotel_chain")}</li>
+    <li>Check-in: ${urlParams.get("checkin") || "Not provided"}</li>
+    <li>Check-out: ${urlParams.get("checkout") || "Not provided"}</li>
+    <li>Price Min: ${urlParams.get("price_min") || "Not provided"}</li>
+    <li>Price Max: ${urlParams.get("price_max") || "Not provided"}</li>
+    <li>Amenities: ${urlParams.get("amenities").replace(/\+/g, ' ').replace(/%2C/g, ', ')}</li>
+    <li>Room View: ${urlParams.get("room_view").replace(/\+/g, ' ')}</li>
+    <li>Capacity: ${urlParams.get("capacity")}</li>
+    <li>Extended: ${urlParams.get("extended") === "yes" ? "Yes" : "No"}</li>
+    <li>Hotel ID: ${urlParams.get("hotel_id")}</li>
+    <li>Customer ID: ${urlParams.get("customerId")}</li>
+  `;
+  resultsContainer.appendChild(urlParamsList);
 }

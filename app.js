@@ -201,20 +201,38 @@ app.post("/search", async (req, res) => {
 });
 
 app.post("/bookings", async (req, res) => {
-  const { customer_id, hotel_id, room_number, check_in_date, check_out_date } = req.body;
+  const {
+    customer_id,
+    hotel_id,
+    room_number,
+    check_in_date,
+    check_out_date,
+    price,
+    amenities,
+    capacity,
+    room_view
+  } = req.body;
 
   try {
-    // Create a new booking using the provided data
-    // This is just an example and should be modified to fit your specific database schema
-    const booking = await createBooking(customer_id, hotel_id, room_number, check_in_date, check_out_date);
+    const booking = await createBooking(
+      customer_id,
+      hotel_id,
+      room_number,
+      check_in_date,
+      check_out_date,
+      price,
+      amenities,
+      capacity,
+      room_view
+    );
 
-    // Send a success response back to the client
     res.status(200).json({ message: "Booking created successfully", booking });
   } catch (error) {
     console.error("Error creating booking:", error);
     res.status(500).json({ error: "Error creating booking" });
   }
 });
+
 
 app.delete("/deleteemployee", async (req, res) => {
   try {
