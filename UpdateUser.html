@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update User</title>
+    <link rel="stylesheet" type="text/css" href="MainPage.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Update User</h1>
+    <p>Please select the user type and provide their ID:</p>
+    <form onsubmit="return searchUser()">
+        <label for="user-type">User Type:</label>
+        <select id="user-type" name="user-type">
+            <option value="employee">Employee</option>
+            <option value="customer">Customer</option>
+        </select><br><br>
+        <label for="user-id">User ID:</label>
+        <input type="text" id="user-id" name="user-id"><br><br>
+        <input type="submit" value="Search">
+    </form>
+    <div id="update-form" style="display: none;">
+        <h2>Update User Information</h2>
+        <form onsubmit="return updateUser()">
+            <div id="user-info"></div>
+            <input type="submit" value="Save Changes">
+            <button type="button" onclick="cancelUpdate()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+    async function searchUser() {
+        event.preventDefault();
+        const userType = document.getElementById('user-type').value;
+        const userId = document.getElementById('user-id').value;
+        const response = await fetch(`/${userType}?${userType}_id=${userId}`);
+        const userInfo = await response.json();
+
+        if (userInfo) {
+            displayUserInfo(userType, userInfo);
+        } else {
+            alert(`No ${userType} found with ID: ${userId}`);
+        }
+    }
+
+    function displayUserInfo(userType, userInfo) {
+        const updateForm = document.getElementById('update-form');
+        const userInfoContainer = document.getElementById('user-info');
+        userInfoContainer.innerHTML = '';
+
+        if (userType === 'customer') {
+            const fields = ['customer_id', 'customer_username', 'customer_password', 'booking_id', 'renting_id', 'SSN', 'customer_name', 'street_number', 'street_name', 'building_number', 'city', 'province', 'zip', 'date_of_registration'];
+            fields.forEach(field => {
+                const label = document.createElement('label');
+                label.setAttribute('for', field);
+                label.textContent = field.split('_').join(' ') + ':';
+                const input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('id', field);
+                input.setAttribute('name', field);
+                input.setAttribute('value', userInfo[field]);
+                userInfoContainer.appendChild(label);
+                userInfoContainer.appendChild(input);
+                userInfoContainer.appendChild(document.createElement('br'));
+            });
+        } else {
+            const fields = ['employee_id', 'employee_username', 'employee_password', 'hotel_id', 'hotel_name', 'employee_name', 'street_number', 'street_name', 'city', 'province', 'SSN', 'job_role'];
+            fields.forEach(field => {
+                const label = document.createElement('label');
+                label.setAttribute('for', field);
+                label.textContent = field.split('_').join(' ') + ':';
+                const input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('id', field);
+                input.setAttribute('name', field);
+                input.setAttribute('value', userInfo[field]);
+                userInfoContainer.appendChild(label);
+                userInfoContainer.appendChild(input);
+                userInfoContainer.appendChild(document.createElement('br'));
+            });
+        }
+        updateForm.style.display = 'block';
+    }
+
+    async function updateUser() {
+        event.preventDefault();
+        // Collect updated user information and send a request to update the user in the database
+    }
+
+    function cancelUpdate() {
+        const updateForm = document.getElementById('update-form');
+        updateForm.style.display = 'none';
+    }
+</script>
+</body>
+</html>

@@ -1,7 +1,8 @@
 body {
-	background-image: url("res/beach.png");
-	background-size: cover;
-	background-position: center;
+	background-image: url("res/hotel.jpg");
+	background-size: auto;
+	background-position: auto, cover;
+	background-repeat: repeat-x;
 	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
 		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
