@@ -8,15 +8,16 @@
 </head>
 
 <body>
-    <form id="Book_Room">
-        <label for="book-label">Book a room:</label>
-        <select id="book-id" name="book-id">
-            <!-- Options will be populated here -->
-        </select>
-        <button type="button" id="book-room-btn">Book Room</button>
+    <div id="results-container">
+        <p>Customer ID: <span id="customer-id"></span></p>
+    </div>
 
-    </form>
-    <div id="results-container"></div>
+    <script>
+        const customerId = localStorage.getItem("customerId");
+        const customerIdElem = document.getElementById("customer-id");
+        customerIdElem.textContent = customerId;
+    </script>
+
 </body>
 
 </html>

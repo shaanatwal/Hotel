@@ -72,13 +72,20 @@ async function createCustomer(
 
 
 async function checkCustomerUserCredentials(username, password) {
-  const sql = "SELECT * FROM Customer WHERE customer_username = ? AND customer_password = ?";
+  const sql = "SELECT customer_id FROM Customer WHERE customer_username = ? AND customer_password = ?";
   return new Promise((resolve, reject) => {
     connection.query(sql, [username, password], (err, results) => {
       if (err) {
         return reject(err);
       }
-      resolve(results.length > 0);
+      console.log("SQL results:", results); // Debug statement
+      
+      if (results.length > 0) {
+        const customerId = results[0].customer_id;
+        resolve(customerId);
+      } else {
+        resolve(null);
+      }
     });
   });
 }
@@ -225,6 +232,39 @@ async function searchRooms(hotelId, capacity, amenities, roomView, extended) {
   });
 }
 
+async function createBooking(customerId, roomId, capacity, price, amenities, roomView, roomExtended, startDate, endDate, numberOfDays) {
+  const bookingId = Math.floor(Math.random() * 1000000);
+
+  return new Promise((resolve, reject) => {
+    const sql = `
+      INSERT INTO Booking
+        (booking_id, room_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, number_of_days)
+      VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    connection.query(sql, [
+      bookingId,
+      roomId,
+      customerId,
+      capacity,
+      price,
+      amenities,
+      roomView,
+      roomExtended,
+      startDate,
+      endDate,
+      numberOfDays
+    ], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+
+
 
 module.exports = {
   getLocations,
@@ -240,6 +280,7 @@ module.exports = {
   getCapacities,
   getAmenities,
   searchRooms,
+  createBooking,
 };
 
 

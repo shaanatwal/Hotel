@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path"); // root
 const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, 
-  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities, searchRooms
+  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities, searchRooms, createBooking
  } = require("./functions");
 
 const app = express();
@@ -197,6 +197,22 @@ app.post("/search", async (req, res) => {
   } catch (error) {
     console.error("Error searching rooms:", error);
     res.status(500).json({ error: "Error searching rooms" });
+  }
+});
+
+app.post("/bookings", async (req, res) => {
+  const { customer_id, hotel_id, room_number, check_in_date, check_out_date } = req.body;
+
+  try {
+    // Create a new booking using the provided data
+    // This is just an example and should be modified to fit your specific database schema
+    const booking = await createBooking(customer_id, hotel_id, room_number, check_in_date, check_out_date);
+
+    // Send a success response back to the client
+    res.status(200).json({ message: "Booking created successfully", booking });
+  } catch (error) {
+    console.error("Error creating booking:", error);
+    res.status(500).json({ error: "Error creating booking" });
   }
 });
 

@@ -165,6 +165,9 @@
 		fetchCapacities();
 		fetchAmenities()
 
+		const urlParams = new URLSearchParams(window.location.search);
+		const storedCustomerId = urlParams.get("customerId"); // get customerId parameter from the URL
+
 		async function getHotels() {
 			const hotelChain = document.getElementById("hotel-chain").value;
 			const checkinDate = document.getElementById("checkin").value;
@@ -175,7 +178,7 @@
 			const roomView = document.getElementById("room-view").value;
 			const capacity = document.getElementById("capacity").value;
 			const extended = document.querySelector('input[name="extended"]:checked').value;
-			const hotelId = storedHotelId;
+			const customerId = storedCustomerId; // get customerId from the URL
 
 			const queryParams = new URLSearchParams({
 				hotel_chain: hotelChain,
@@ -187,7 +190,8 @@
 				room_view: roomView,
 				capacity: capacity,
 				extended: extended,
-				hotel_id: hotelId
+				hotel_id: storedHotelId,
+				customerId: customerId // add customerId to the query parameters
 			});
 
 			const url = `/SearchResults.html?${queryParams.toString()}`;

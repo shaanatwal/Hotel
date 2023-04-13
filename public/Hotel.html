@@ -115,6 +115,7 @@
 		const hotelsSelect = document.getElementById("hotels");
 		const buttonSearch = document.querySelector(".button-search");
 		const searchButton = buttonSearch.querySelector("button");
+		const urlParams = new URLSearchParams(window.location.search); // get URL parameters
 
 		hotelsSelect.addEventListener("change", function () {
 			if (hotelsSelect.value !== "") {
@@ -122,9 +123,12 @@
 				searchButton.onclick = function () {
 					const selectedHotelId = hotelsSelect.options[hotelsSelect.selectedIndex].value;
 					localStorage.setItem("selectedHotelId", selectedHotelId);
-					window.location.href = `SearchLanding.html?hotel_id=${selectedHotelId}`;
-				};
 
+					// append customerId parameter to the next URL
+					const customerId = urlParams.get("customerId");
+					const nextUrl = `SearchLanding.html?hotel_id=${selectedHotelId}&customerId=${customerId}`;
+					window.location.href = nextUrl;
+				};
 			} else {
 				buttonSearch.style.display = "none";
 			}
