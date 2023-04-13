@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path"); // root
 const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, 
-  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeCustomer, removeEmployee
+  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeCustomer, removeEmployee, removeRoom
  } = require("./functions");
 
 const app = express();
@@ -245,4 +245,16 @@ app.delete("/deletecustomer", async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
+});
+
+app.delete("/deleteroom", async (req, res) => {
+  try {
+    const { room_id } = req.body;
+    await removeRoom(room_id);
+    res.sendStatus(200);
+  }
+  catch (error) {
+    console.error("Error deleting room:", error);
+    res.status(500).json({ error: "Error deleting room" });
+  }
 });

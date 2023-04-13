@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Delete Room</title>
+		<link rel="stylesheet" type="text/css" href="MainPage.css" />
+	</head>
+	<body>
+	<div class="container">
+		<h1>Delete Room</h1>
+		<p>Please provide the room ID:</p>
+		<form onsubmit="return deleteRoom()">
+			<label for="room-id">Room ID:</label>
+			<input type="text" id="room-id" name="room-id"><br><br>
+			<input type="submit" value="Delete">
+		</form>
+	</div>
+
+	<script src="app.js"></script>
+	<script>
+		function deleteRoom() {
+			const roomId = document.getElementById("room-id").value;
+			const url = "/deleteroom";
+			
+			fetch(url, {
+				method: "DELETE",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ room_id: roomId }),
+			})
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					throw new Error('Error deleting room');
+				}
+			})
+			.then((data) => {
+				console.log(data);
+				alert("Room deleted successfully");
+			})
+			.catch((error) => {
+				console.error("Error deleting room:", error);
+				alert("If the room exists, it has been deleted.");
+			});
+			return false;
+		}
+	</script>
+	</body>
+</html>

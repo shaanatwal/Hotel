@@ -78,7 +78,6 @@ async function checkCustomerUserCredentials(username, password) {
       if (err) {
         return reject(err);
       }
-      console.log("SQL results:", results); // Debug statement
       
       if (results.length > 0) {
         const customerId = results[0].customer_id;
@@ -287,6 +286,18 @@ async function removeCustomer (customer_id) {
   });
 }
 
+async function removeRoom(room_id) {
+  const sql = "DELETE FROM Room WHERE room_id = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [room_id], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
 
 
 
@@ -307,6 +318,7 @@ module.exports = {
   createBooking,
   removeCustomer,
   removeEmployee,
+  removeRoom,
 };
 
 

@@ -154,7 +154,6 @@
 				if (response.ok) {
 					const data = await response.json();
 					if (data.isAuthenticated) {
-						console.log(data.isAuthenticated) // ITS SAVED CUSTOMERID AS isAuthenticated!!!
 						const customerId = data.isAuthenticated;
 						localStorage.setItem('customerId', customerId);
 						alert("Login successful!");
