@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path"); // root
 const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, 
-  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities
+  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities, searchRooms
  } = require("./functions");
 
 const app = express();
@@ -189,8 +189,19 @@ app.get("/amenities", async (req, res) => {
 });
 
 
+app.post("/search", async (req, res) => {
+  const { hotelId, capacity, amenities, roomView, extended } = req.body;
+  try {
+    const rooms = await searchRooms(hotelId, capacity, amenities, roomView, extended);
+    res.status(200).json(rooms);
+  } catch (error) {
+    console.error("Error searching rooms:", error);
+    res.status(500).json({ error: "Error searching rooms" });
+  }
+});
+
+
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
-

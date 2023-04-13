@@ -204,6 +204,26 @@ async function getAmenities(hotel_id) {
   return results.map((row) => row.amenities);
 }
 
+async function searchRooms(hotelId, capacity, amenities, roomView, extended) {
+  const query = `
+    SELECT *
+    FROM Room
+    WHERE hotel_id = ?
+      AND capacity = ?
+      AND amenities = ?
+      AND room_view = ?
+      AND room_extended = ?
+  `;
+  return new Promise((resolve, reject) => {
+    connection.query(query, [hotelId, capacity, amenities, roomView, extended], (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
 
 
 module.exports = {
@@ -219,6 +239,7 @@ module.exports = {
   getRoomViews,
   getCapacities,
   getAmenities,
+  searchRooms,
 };
 
 
