@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path"); // root
 const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, 
-  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews
+  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities
  } = require("./functions");
 
 const app = express();
@@ -177,6 +177,16 @@ app.get("/capacities", async (req, res) => {
   }
 });
 
+app.get("/amenities", async (req, res) => {
+  const { hotel_id } = req.query;
+  try {
+    const amenities = await getAmenities(hotel_id);
+    res.json(amenities);
+  } catch (error) {
+    console.error("Error fetching amenities:", error);
+    res.status(500).json({ error: "Error fetching amenities" });
+  }
+});
 
 
 

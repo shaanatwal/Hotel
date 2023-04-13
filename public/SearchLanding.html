@@ -27,8 +27,7 @@
 
 				<label for="amenities">Amenities:</label>
 				<select id="amenities" multiple>
-					<option value="pool">Pool</option>
-					<option value="gym">Gym</option>
+
 				</select>
 
 				<label for="room-view">Room View:</label>
@@ -137,9 +136,34 @@
 			}
 		}
 
+		async function fetchAmenities() {
+			try {
+				const response = await fetch(`/amenities?hotel_id=${storedHotelId}`);
+				if (!response.ok) {
+					throw new Error("Failed to fetch amenities");
+				}
+
+				const amenitiesList = await response.json();
+				console.log("amenities:", amenitiesList);
+
+				const amenitiesSelect = document.getElementById("amenities");
+
+				amenitiesList.forEach((amenities) => {
+					const option = document.createElement("option");
+					option.value = amenities;
+					option.textContent = amenities;
+					amenitiesSelect.appendChild(option);
+				});
+
+			} catch (error) {
+				console.error("Error fetching amenities:", error);
+			}
+		}
+
 		fetchHotelChains();
 		fetchRoomViews();
 		fetchCapacities();
+		fetchAmenities()
 
 	</script>
 

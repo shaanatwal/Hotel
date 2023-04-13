@@ -193,7 +193,16 @@ async function getCapacities(hotel_id) {
   return results.map((row) => row.capacity);
 }
 
-
+async function getAmenities(hotel_id) {
+  const query = `SELECT DISTINCT amenities FROM Room WHERE hotel_id = ?`;
+  const results = await new Promise((resolve, reject) => {
+    connection.query(query, [hotel_id], (err, results) => {
+      if (err) reject(err);
+      else resolve(results);
+    });
+  });
+  return results.map((row) => row.amenities);
+}
 
 
 
@@ -209,6 +218,7 @@ module.exports = {
   getHotelChainsByHotelId,
   getRoomViews,
   getCapacities,
+  getAmenities,
 };
 
 
