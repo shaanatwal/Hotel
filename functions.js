@@ -321,6 +321,176 @@ async function removeRoom(room_id) {
 }
 
 
+async function removeHotel(hotel_id) {
+  const sql = "DELETE FROM Hotel WHERE hotel_id = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [hotel_id], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+async function createHotel(
+  hotel_id,
+  chain_id,
+  hotel_name,
+  street_number,
+  street_name,
+  building_number,
+  city,
+  province,
+  zip,
+  category_hotel,
+  number_of_rooms,
+  phone_number,
+  email_address
+) {
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO Hotel (hotel_id, chain_id, hotel_name, street_number, street_name, building_number, city, province, zip, category_hotel, number_of_rooms, phone_number, email_address)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    connection.query(sql, [
+      hotel_id,
+      chain_id,
+      hotel_name,
+      street_number,
+      street_name,
+      building_number,
+      city,
+      province,
+      zip,
+      category_hotel,
+      number_of_rooms,
+      phone_number,
+      email_address
+    ], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+async function createRoom(room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages) {
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO Room (room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    connection.query(sql, [room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+async function getHotelById(hotel_id) {
+  const sql = "SELECT * FROM Hotel WHERE hotel_id = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [hotel_id], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results[0]);
+    });
+  });
+}
+
+
+async function updateHotel(hotelData) {
+  const {
+    hotel_id,
+    chain_id,
+    hotel_name,
+    street_number,
+    street_name,
+    building_number,
+    city,
+    province,
+    zip,
+    category_hotel,
+    number_of_rooms,
+    phone_number,
+    email_address,
+  } = hotelData;
+
+  const sql = `UPDATE Hotel SET chain_id = ?, hotel_name = ?, street_number = ?, street_name = ?, building_number = ?, city = ?, province = ?, zip = ?, category_hotel = ?, number_of_rooms = ?, phone_number = ?, email_address = ? WHERE hotel_id = ?`;
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [
+      chain_id,
+      hotel_name,
+      street_number,
+      street_name,
+      building_number,
+      city,
+      province,
+      zip,
+      category_hotel,
+      number_of_rooms,
+      phone_number,
+      email_address,
+      hotel_id
+    ], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+async function getRoomById(room_id) {
+  const sql = "SELECT * FROM Room WHERE room_id = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [room_id], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results[0]);
+    });
+  });
+}
+
+
+async function updateRoom(roomData) {
+  const {
+    room_id,
+    hotel_id,
+    capacity,
+    price,
+    amenities,
+    room_view,
+    room_extended,
+    damages,
+  } = roomData;
+
+  const sql = `UPDATE Room SET hotel_id = ?, capacity = ?, price = ?, amenities = ?, room_view = ?, room_extended = ?, damages = ? WHERE room_id = ?`;
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [
+      hotel_id,
+      capacity,
+      price,
+      amenities,
+      room_view,
+      room_extended,
+      damages,
+      room_id
+    ], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+
 
 
 module.exports = {
@@ -341,6 +511,13 @@ module.exports = {
   removeCustomer,
   removeEmployee,
   removeRoom,
+  removeHotel,
+ createHotel,
+ createRoom,
+ getHotelById,
+ updateHotel,
+ updateRoom,
+ getRoomById,
 };
 
 

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Update Room</title>
+  <link rel="stylesheet" type="text/css" href="MainPage.css" />
+</head>
+<body>
+<div class="container">
+  <h1>Update Room</h1>
+  <label for="room_id">Enter Room ID:</label>
+  <input type="number" id="room_id" required>
+  <button onclick="loadRoom()">Load Room</button>
+
+  <form id="updateRoomForm" onsubmit="return updateRoom()" style="display:none;">
+    <input type="hidden" id="room_id" disabled><br><br>
+
+    <label for="hotel_id">Hotel ID:</label>
+    <input type="number" id="hotel_id" required><br><br>
+    <br>
+
+    <label for="capacity">Capacity:</label>
+    <select id="capacity" required><br><br>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select><br><br>
+    
+
+    <label for="price">Price:</label>
+    <input type="number" id="price" step="0.01" min="0.01" required><br><br>
+    
+
+    <label for="amenities">Amenities:</label>
+    <div id="amenities">
+      <input type="checkbox" id="mini-fridge" name="amenity" value="Mini-fridge">
+      <label for="mini-fridge">Mini-fridge</label>
+      <input type="checkbox" id="kitchenette" name="amenity" value="Kitchenette">
+      <label for="kitchenette">Kitchenette</label>
+      <input type="checkbox" id="air-conditioning" name="amenity" value="Air conditioning">
+      <label for="air-conditioning">Air conditioning</label>
+      <input type="checkbox" id="free-wifi" name="amenity" value="Free Wi-Fi">
+      <label for="free-wifi">Free Wi-Fi</label>
+      <input type="checkbox" id="bathtub" name="amenity" value="Bathtub">
+      <label for="bathtub">Bathtub</label> <br>
+      <input type="checkbox" id="tv" name="amenity" value="TV">
+      <label for="tv">TV</label>
+    </div>
+    <br>
+
+    <label for="room_view">Room View:</label>
+    <select id="room_view" required><br><br>
+      <option value="City view">City view</option>
+      <option value="Waterfront View">Waterfront View</option>
+    </select><br><br>
+    
+
+    <label for="room_extended">Room Extended:</label>
+    <input type="checkbox" id="room_extended"><br><br>
+    
+
+    <label for="damages">Damages:</label>
+    <input type="checkbox" id="damages"><br><br>
+    
+
+    <button type="submit">Save Changes</button>
+  </form>
+</div>
+
+<script src="functions.js"></script>
+<script>
+
+    async function loadRoom() {
+  const roomId = document.getElementById("room_id").value;
+  try {
+    const response = await fetch(`/getroom/${roomId}`);
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error);
+    }
+    const room = await response.json();
+    populateForm(room);
+  } catch (error) {
+    alert(`Error loading room: ${error.message}`);
+  }
+}
+
+function populateForm(room) {
+  const form = document.getElementById("updateRoomForm");
+  form.style.display = "block";
+  
+  for (const key in room) {
+    const element = document.getElementById(key);
+    if (element) {
+      if (element.type === "checkbox") {
+        element.checked = room[key] === 1;
+      } else {
+        element.value = room[key];
+      }
+    }
+  }
+}
+
+async function updateRoom() {
+  const roomId = document.getElementById("room_id").value;
+  const hotelId = document.getElementById("hotel_id").value;
+  const capacity = document.getElementById("capacity").value;
+  const price = document.getElementById("price").value;
+  const amenities = Array.from(document.querySelectorAll("#amenities input[type='checkbox']:checked"))
+    .map((el) => el.value)
+    .join(", ");
+  const roomView = document.getElementById("room_view").value;
+  const roomExtended = document.getElementById("room_extended").checked ? 1 : 0;
+  const damages = document.getElementById("damages").checked ? 1 : 0;
+
+  try {
+    await updateRoomInDatabase(roomId, hotelId, capacity, price, amenities, roomView, roomExtended, damages);
+    alert("Room updated successfully.");
+  } catch (error) {
+    alert(`Error updating room: ${error.message}`);
+  }
+
+  return false;
+}
+
+async function updateRoomInDatabase(roomId, hotelId, capacity, price, amenities, roomView, roomExtended, damages) {
+  const response = await fetch("/updateroom", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      room_id: roomId,
+      hotel_id: hotelId,
+      capacity: capacity,
+      price: price,
+      amenities: amenities,
+      room_view: roomView,
+      room_extended: roomExtended,
+      damages: damages,
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error);
+  }
+}
+
+</script>
+</body>
+</html>

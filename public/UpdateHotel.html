@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Update Hotel</title>
+	<link rel="stylesheet" type="text/css" href="MainPage.css" />
+</head>
+<body>
+<div class="container">
+	<h1>Update Hotel</h1>
+	<div>
+		<label for="search_hotel_id">Enter Hotel ID to update:</label>
+		<input type="number" id="search_hotel_id" name="search_hotel_id" required>
+		<button onclick="loadHotelData()">Load Hotel</button>
+	</div>
+	<form id="updateHotelForm" onsubmit="return updateHotel()">
+		<label for="hotel_id">Hotel ID:</label>
+		<input type="number" id="hotel_id" name="hotel_id" readonly required><br><br>
+		
+		<label for="chain_id">Chain:</label>
+		<select name="chain_id" id="chain_id">
+			<option value="1">Marriott</option>
+			<option value="2">Hilton</option>
+			<option value="3">Hyatt</option>
+			<option value="4">InterContinental</option>
+			<option value="5">Four Seasons</option>
+		</select><br><br>
+		<label for="hotel_name">Hotel Name:</label>
+		<input type="text" id="hotel_name" name="hotel_name" required><br><br>
+		<label for="street_number">Street Number:</label>
+		<input type="number" id="street_number" name="street_number" required><br><br>
+		<label for="street_name">Street Name:</label>
+		<input type="text" id="street_name" name="street_name" required><br><br>
+		<label for="building_number">Building Number:</label>
+		<input type="text" id="building_number" name="building_number"><br><br>
+		<label for="city">City:</label>
+		<input type="text" id="city" name="city" required><br><br>
+		<label for="province">Province:</label>
+		<input type="text" id="province" name="province" required><br><br>
+		<label for="zip">Zip:</label>
+		<input type="text" id="zip" name="zip" required><br><br>
+		<label for="category_hotel">Category (Stars):</label>
+		<input type="number" id="category_hotel" name="category_hotel" min="1" max="5" required><br><br>
+		<label for="number_of_rooms">Number of Rooms:</label>
+		<input type="number" id="number_of_rooms" name="number_of_rooms" required><br><br>
+		<label for="phone_number">Phone Number:</label>
+		<input type="text" id="phone_number" name="phone_number" required><br><br>
+		<label for="email_address">Email Address:</label>
+		<input type="email" id="email_address" name="email_address" required><br><br>
+		<input type="submit" value="Update Hotel">
+	</form>
+</div>
+
+<script src="app.js"></script>
+<script src="functions.js"></script>
+<script>
+    async function loadHotelData() {
+        const hotelId = document.getElementById("search_hotel_id").value;
+        const response = await fetch(`/gethotel/${hotelId}`);
+        
+        if (!response.ok) {
+            alert("Error loading hotel.");
+            return;
+        }
+
+        const hotel = await response.json();
+        if (!hotel) {
+            alert("Hotel not found.");
+            return;
+        }
+
+        document.getElementById("hotel_id").value = hotel.hotel_id;
+        document.getElementById("chain_id").value = hotel.chain_id.toString();
+        document.getElementById("hotel_name").value = hotel.hotel_name;
+        document.getElementById("street_number").value = hotel.street_number;
+        document.getElementById("street_name").value = hotel.street_name;
+        document.getElementById("building_number").value = hotel.building_number;
+        document.getElementById("city").value = hotel.city;
+        document.getElementById("province").value = hotel.province;
+        document.getElementById("zip").value = hotel.zip;
+        document.getElementById("category_hotel").value = hotel.category_hotel;
+        document.getElementById("number_of_rooms").value = hotel.number_of_rooms;
+        document.getElementById("phone_number").value = hotel.phone_number;
+        document.getElementById("email_address").value = hotel.email_address;
+    }
+
+  
+    async function updateHotel() {
+      const hotelId = document.getElementById("hotel_id").value;
+      const chainId = document.getElementById("chain_id").value;
+      const hotelName = document.getElementById("hotel_name").value;
+      const streetNumber = document.getElementById("street_number").value;
+      const streetName = document.getElementById("street_name").value;
+      const buildingNumber = document.getElementById("building_number").value;
+      const city = document.getElementById("city").value;
+      const province = document.getElementById("province").value;
+      const zip = document.getElementById("zip").value;
+      const categoryHotel = document.getElementById("category_hotel").value;
+      const numberOfRooms = document.getElementById("number_of_rooms").value;
+      const phoneNumber = document.getElementById("phone_number").value;
+      const emailAddress = document.getElementById("email_address").value;
+
+      const response = await fetch("/updatehotel", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          hotel_id: hotelId,
+          chain_id: chainId,
+          hotel_name: hotelName,
+          street_number: streetNumber,
+          street_name: streetName,
+          building_number: buildingNumber,
+          city: city,
+          province: province,
+          zip: zip,
+          category_hotel: categoryHotel,
+          number_of_rooms: numberOfRooms,
+          phone_number: phoneNumber,
+          email_address: emailAddress
+        })
+      });
+  
+      if (!response.ok) {
+        alert("Error updating hotel.");
+      } else {
+        alert("Hotel updated successfully.");
+      }
+  
+      return false;
+    }
+  </script>
+</body>
+</html>

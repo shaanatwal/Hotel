@@ -1,8 +1,10 @@
 const express = require("express");
 const path = require("path"); // root
-const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, 
-  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeCustomer, removeEmployee, removeRoom
+const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, getHotelById, updateHotel, updateRoom, getRoomById,
+  checkEmployeeUserCredentials, createEmployee,  getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeRoom, createRoom, removeCustomer, removeHotel, createHotel, removeEmployee
  } = require("./functions");
+
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -274,5 +276,120 @@ app.delete("/deleteroom", async (req, res) => {
   catch (error) {
     console.error("Error deleting room:", error);
     res.status(500).json({ error: "Error deleting room" });
+  }
+});
+
+app.delete("/deletehotel", async (req, res) => {
+  try {
+    const { hotel_id } = req.body;
+    await removeHotel(hotel_id);
+    res.sendStatus(200);
+  }
+  catch (error) {
+    console.error("Error deleting hotel:", error);
+    res.status(500).json({ error: "Error deleting hotel" });
+  }
+});
+
+app.post("/addhotel", async (req, res) => {
+  try {
+    const {
+      hotel_id,
+      chain_id,
+      hotel_name,
+      street_number,
+      street_name,
+      building_number,
+      city,
+      province,
+      zip,
+      category_hotel,
+      number_of_rooms,
+      phone_number,
+      email_address,
+    } = req.body;
+
+    await createHotel(
+      hotel_id,
+      chain_id,
+      hotel_name,
+      street_number,
+      street_name,
+      building_number,
+      city,
+      province,
+      zip,
+      category_hotel,
+      number_of_rooms,
+      phone_number,
+      email_address
+    );
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error creating hotel:", error);
+    res.status(500).json({ error: "Error creating hotel" });
+  }
+});
+
+app.post("/addroom", async (req, res) => {
+  try {
+    const { room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages } = req.body;
+
+    // Create the room using the provided data
+    await createRoom(room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages);
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error adding room:", error);
+    res.status(500).json({ error: "Error adding room" });
+  }
+});
+//////new ones
+app.get("/updatehotel", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "UpdateHotel.html"));
+});
+
+app.get("/gethotel/:hotel_id", async (req, res) => {
+  try {
+    const hotel = await getHotelById(req.params.hotel_id);
+    res.json(hotel);
+  } catch (error) {
+    console.error("Error getting hotel:", error);
+    res.status(500).json({ error: "Error getting hotel" });
+  }
+});
+///new ones
+app.put("/updatehotel", async (req, res) => {
+  try {
+    await updateHotel(req.body);
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error updating hotel:", error);
+    res.status(500).json({ error: "Error updating hotel" });
+  }
+});
+
+app.get("/updateroom", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "UpdateRoom.html"));
+});
+
+app.get("/getroom/:room_id", async (req, res) => {
+  try {
+    const room = await getRoomById(req.params.room_id);
+    res.json(room);
+  } catch (error) {
+    console.error("Error getting room:", error);
+    res.status(500).json({ error: "Error getting room" });
+  }
+});
+
+app.put("/updateroom", async (req, res) => {
+  try {
+    await updateRoom(req.body);
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error updating room:", error);
+    res.status(500).json({ error: "Error updating room" });
   }
 });

@@ -9,14 +9,28 @@
 		<div class="container">
 			<h1>Hotel Admin Management</h1>
 			<p>Please select an option below to continue:</p>
-			<button type="button" onclick="goToManage()">Manage Users</button>
+			<button type="button" onclick="goToManage('users')">Manage Users</button>
+			<button type="button" onclick="goToManage('hotels')">Manage Hotel</button>
+			<button type="button" onclick="goToManage('rooms')">Manage Rooms</button>
+			<button type="button" onclick="goToManage('booking')">Manage Booking</button>
+
 		</div>
 
-		
+		<script src="app.js"></script>
 		<script>
-			function goToManage() {
-				window.location.href = "ManageUsers.html";
-
+			function goToManage(type) {
+				if (type === "booking") {
+					window.location.href = "ManageBooking.html";
+				}
+				else if (type === "users") {
+					window.location.href = "ManageUsers.html";
+				}
+				else if (type === "hotels") {
+					window.location.href = "ManageHotels.html";
+				}
+				else if (type === "rooms") {
+					window.location.href = "ManageRooms.html";
+				}
 			}
 		</script>
 	</body>

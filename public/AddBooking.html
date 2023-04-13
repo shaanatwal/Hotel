@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Hotel</title>
+    <link rel="stylesheet" type="text/css" href="MainPage.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Add Hotel</h1>
+        <form onsubmit="return addHotel()">
+            <label for="chain_id">Chain:</label>
+            <select name="chain_id" id="chain_id">
+                <option value="1">Marriott</option>
+                <option value="2">Hilton</option>
+                <option value="3">Hyatt</option>
+                <option value="4">InterContinental</option>
+                <option value="5">Four Seasons</option>
+            </select><br><br>
+            <label for="hotel_name">Hotel Name:</label>
+            <input type="text" id="hotel_name" name="hotel_name" required><br><br>
+            <label for="street_number">Street Number:</label>
+            <input type="number" id="street_number" name="street_number" required><br><br>
+            <label for="street_name">Street Name:</label>
+            <input type="text" id="street_name" name="street_name" required><br><br>
+            <label for="building_number">Building Number:</label>
+            <input type="text" id="building_number" name="building_number"><br><br>
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required><br><br>
+            <label for="province">Province:</label>
+            <input type="text" id="province" name="province" required><br><br>
+            <label for="zip">Zip:</label>
+            <input type="text" id="zip" name="zip" required><br><br>
+            <label for="category_hotel">Category (Stars):</label>
+            <input type="number" id="category_hotel" name="category_hotel" min="1" max="5" required><br><br>
+            <label for="number_of_rooms">Number of Rooms:</label>
+            <input type="number" id="number_of_rooms" name="number_of_rooms" required><br><br>
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" required><br><br>
+            <label for="email_address">Email Address:</label>
+            <input type="email" id="email_address" name="email_address" required><br><br>
+            <input type="submit" value="Add Hotel">
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        async function addHotelToDatabase(hotelId, chainId, hotelName, streetNumber, streetName, buildingNumber, city, province, zip, categoryHotel, numberOfRooms, phoneNumber, emailAddress) {
+            const response = await fetch("/addhotel", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    hotel_id: hotelId,
+                    chain_id: chainId,
+                    hotel_name: hotelName,
+                    street_number: streetNumber,
+                    street_name: streetName,
+                    building_number: buildingNumber,
+                    city: city,
+                    province: province,
+                    zip: zip,
+                    category_hotel: categoryHotel,
+                    number_of_rooms: numberOfRooms,
+                    phone_number: phoneNumber,
+                    email_address: emailAddress
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        }
+
+        function addHotel() {
+            const hotelId = Math.floor(1000 + Math.random() * 9000);
+            const chainId = document.getElementById("chain_id").value;
+            const hotelName = document.getElementById("hotel_name").value;
+            const streetNumber = document.getElementById("street_number").value;
+            const streetName = document.getElementById("street_name").value;
+            const buildingNumber = document.getElementById("building_number").value;
+            const city = document.getElementById("city").value;
+            const province = document.getElementById("province").value;
+            const zip = document.getElementById("zip").value;
+            const categoryHotel = document.getElementById("category_hotel").value;
+            const numberOfRooms = document.getElementById("number_of_rooms").value;
+            const phoneNumber = document.getElementById("phone_number").value;
+            const emailAddress = document.getElementById("email_address").value;
+
+            addHotelToDatabase(hotelId, chainId, hotelName, streetNumber, streetName, buildingNumber, city, province, zip, categoryHotel, numberOfRooms, phoneNumber, emailAddress)
+                .then(() => {
+                    alert("Hotel added successfully.");
+                })
+                .catch((error) => {
+                    console.error("Error adding hotel:", error);
+                    alert("Error adding hotel.");
+                });
+
+            return false;
+        }
+    </script>
+</body>
+
+</html>

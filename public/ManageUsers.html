@@ -9,8 +9,9 @@
 		<div class="container">
 			<h1>User Management</h1>
 			<p>Please select an option below to continue:</p>
-            <button type="button" onclick="goToManage('delete')">Delete User</button>
-			<button type="button" onclick="goToManage('update')">Update User</button>
+            <button type="button" onclick="goToManage('delete')">Delete Employee or Customer</button>
+			<button type="button" onclick="goToManage('updateE')">Update Employee</button>
+			<button type="button" onclick="goToManage('updateC')">Update Customer</button>
 		</div>
 
 		<script src="app.js"></script>
@@ -18,8 +19,10 @@
 			function goToManage(type) {
 				if (type === "delete") {
 					window.location.href = "DeleteUser.html";
-				} else if (type === "update") {
-					window.location.href = "UpdateUser.html";
+				} else if (type === "updateE") {
+					window.location.href = "UpdateEmployee.html";
+				} else if (type === "updateC") {
+					window.location.href = "UpdateCustomer.html";
 				} 
 			}
 		</script>

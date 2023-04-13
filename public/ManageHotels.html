@@ -7,23 +7,23 @@
 
 	<body>
 		<div class="container">
-			<h1>Room Management</h1>
+			<h1>Hotel Management</h1>
 			<p>Please select an option below to continue:</p>
-            <button type="button" onclick="goToManage('delete')">Delete Room</button>
-            <button type="button" onclick="goToManage('add')">Add Room</button>
-			<button type="button" onclick="goToManage('update')">Update Room</button>
+            <button type="button" onclick="goToManage('add')">Add Hotel</button>
+            <button type="button" onclick="goToManage('delete')">Delete Hotel</button>
+			<button type="button" onclick="goToManage('update')">Update Hotel</button>
 		</div>
 
 		<script src="app.js"></script>
 		<script>
 			function goToManage(type) {
 				if (type === "delete") {
-					window.location.href = "DeleteRoom.html";
+					window.location.href = "DeleteHotel.html";
 				} else if (type === "update") {
-					window.location.href = "UpdateRoom.html";
+					window.location.href = "UpdateHotel.html";
 				} 
                 else if (type === "add") {
-					window.location.href = "AddRoom.html";
+					window.location.href = "AddHotel.html";
 				}
 			}
 		</script>
