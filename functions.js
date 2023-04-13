@@ -243,13 +243,11 @@ async function createBooking(
   room_view
 ) {
   return new Promise((resolve, reject) => {
-    // Assuming you have a roomId from hotel_id and room_number
-    const roomId = null; // Replace with your logic to get roomId
+    const roomId = room_number; 
 
-    // Assuming you have an employeeId from the hotel_id
-    const employeeId = null; // Replace with your logic to get employeeId
+    const employeeId = null; // employeeId to be added later
 
-    const roomExtended = true; // Replace with your logic to get roomExtended
+    const roomExtended = true; 
 
     const startDate = new Date(check_in_date);
     const endDate = new Date(check_out_date);
