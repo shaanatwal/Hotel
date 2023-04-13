@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hotel Booking</title>
+		<link rel="stylesheet" type="text/css" href="Hotel.css" />
+	</head>
+
+	<body>
+		<div class="container">
+			<h1 id="title">Admin Login</h1>
+			<section class="login">
+				<form>
+					<label for="username">Username:</label>
+					<input type="text" id="username" name="username" />
+					<label for="password">Password:</label>
+					<input type="password" id="password" name="password" />
+					<button type="button" onclick="login()">Login</button>
+
+					
+				</form>
+			</section>
+		</div>
+
+		<script>
+			function login() {
+				let username = document.getElementById("username").value;
+				let password = document.getElementById("password").value;
+				if (username === "admin" && password === "12345") {
+					window.location.href = "AdminPage.html";
+				} else {
+					alert("Invalid username or password");
+				}
+			}
+
+		
+		</script>
+	</body>
+</html>

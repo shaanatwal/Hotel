@@ -263,6 +263,30 @@ async function createBooking(customerId, roomId, capacity, price, amenities, roo
   });
 }
 
+async function removeEmployee (employee_id) {
+  const sql = "DELETE FROM Employee WHERE employee_id = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [employee_id], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+async function removeCustomer (customer_id) {
+  const sql = "DELETE FROM Customer WHERE customer_id = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [customer_id], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
 
 
 
@@ -281,6 +305,8 @@ module.exports = {
   getAmenities,
   searchRooms,
   createBooking,
+  removeCustomer,
+  removeEmployee,
 };
 
 

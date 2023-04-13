@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Delete User</title>
+		<link rel="stylesheet" type="text/css" href="MainPage.css" />
+	</head><body>
+	<div class="container">
+		<h1>Delete User</h1>
+		<p>Please select the user type and provide their ID:</p>
+		<form onsubmit="return deleteUser()">
+			<label for="user-type">User Type:</label>
+			<select id="user-type" name="user-type">
+				<option value="employee">Employee</option>
+				<option value="customer">Customer</option>
+			</select><br><br>
+			<label for="user-id">User ID:</label>
+			<input type="text" id="user-id" name="user-id"><br><br>
+			<input type="submit" value="Delete">
+	</div>
+
+	<script src="app.js"></script>
+    <script>
+    function deleteUser() {
+    const userType = document.getElementById("user-type").value;
+    const userId = document.getElementById("user-id").value;
+    const url = userType === "employee" ? "/deleteemployee" : "/deletecustomer";
+    const idField = userType === "employee" ? "employee_id" : "customer_id";
+    
+    fetch(url, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [idField]: userId }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Error deleting user');
+        }
+    })
+    .then((data) => {
+        console.log(data);
+        alert("User deleted successfully");
+    })
+    .catch((error) => {
+        console.error("Error deleting user:", error);
+        alert("If the user exists, they have deleted.");
+    });
+    return false;
+}
+    </script>
+    </body>
+</html>

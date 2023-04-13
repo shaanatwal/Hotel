@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hotel Booking</title>
+		<link rel="stylesheet" type="text/css" href="MainPage.css" />
+	</head>
+
+	<body>
+		<div class="container">
+			<h1>User Management</h1>
+			<p>Please select an option below to continue:</p>
+            <button type="button" onclick="goToManage('delete')">Delete User</button>
+			<button type="button" onclick="goToManage('update')">Update User</button>
+		</div>
+
+		<script src="app.js"></script>
+		<script>
+			function goToManage(type) {
+				if (type === "delete") {
+					window.location.href = "DeleteUser.html";
+				} else if (type === "update") {
+					window.location.href = "UpdateUser.html";
+				} 
+			}
+		</script>
+	</body>
+</html>
+

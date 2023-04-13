@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path"); // root
 const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, 
-  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities, searchRooms, createBooking
+  checkEmployeeUserCredentials, createEmployee, getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeCustomer, removeEmployee
  } = require("./functions");
 
 const app = express();
@@ -213,6 +213,31 @@ app.post("/bookings", async (req, res) => {
   } catch (error) {
     console.error("Error creating booking:", error);
     res.status(500).json({ error: "Error creating booking" });
+  }
+});
+
+app.delete("/deleteemployee", async (req, res) => {
+  try {
+    const { employee_id } = req.body;
+    await removeEmployee(employee_id);
+    res.sendStatus(200);
+  }
+  catch (error) {
+    console.error("Error deleting employee:", error);
+    res.status(500).json({ error: "Error deleting employee" });
+  }
+});
+
+
+app.delete("/deletecustomer", async (req, res) => {
+  try {
+    const { customer_id } = req.body;
+    await removeCustomer(customer_id);
+    res.sendStatus(200);
+  }
+  catch (error) {
+    console.error("Error deleting customer:", error);
+    res.status(500).json({ error: "Error deleting customer" });
   }
 });
 
