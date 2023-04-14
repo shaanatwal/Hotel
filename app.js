@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path"); // root
 const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, getHotelById, updateHotel, updateRoom, getRoomById,
-  checkEmployeeUserCredentials, createEmployee,  getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeRoom, createRoom, removeCustomer, removeHotel, createHotel, removeEmployee,createNewBooking,removeBooking
+  checkEmployeeUserCredentials, createEmployee,  getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeRoom, createRoom, removeCustomer, removeHotel, createHotel, removeEmployee,createNewBooking,removeBooking, createNewRenting
  } = require("./functions");
 
 
@@ -443,5 +443,51 @@ app.delete("/deletebooking", async (req, res) => {
   catch (error) {
     console.error("Error deleting booking:", error);
     res.status(500).json({ error: "Error deleting booking" });
+  }
+});
+
+// THIS IS THE ONE FOR AddRenting.html
+app.post("/addrenting", async (req, res) => {
+  try {
+    const {
+      renting_id,
+      booking_id,
+      employee_id,
+      customer_id,
+      room_id,
+      capacity,
+      price,
+      amenities,
+      room_view,
+      room_extended,
+      start_date,
+      end_date,
+      num_days,
+      payment,
+      additional_charges
+    } = req.body;
+
+    await createNewRenting(
+      renting_id,
+      booking_id,
+      employee_id,
+      customer_id,
+      room_id,
+      capacity,
+      price,
+      amenities,
+      room_view,
+      room_extended,
+      start_date,
+      end_date,
+      num_days,
+      payment,
+      additional_charges
+    );
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error creating new booking:", error);
+    res.status(500).json({ error: "Error creating new booking" });
   }
 });

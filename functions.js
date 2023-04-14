@@ -543,6 +543,52 @@ async function updateRoom(roomData) {
   });
 }
 
+async function createNewRenting(
+  renting_id,
+  booking_id,
+  room_id,
+  employee_id,
+  customer_id,
+  capacity,
+  price,
+  amenities,
+  room_view,
+  room_extended,
+  check_in,
+  check_out,
+  days_rented,
+  payment,
+  additional_charges
+) {
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO Renting (renting_id, booking_id, employee_id, customer_id, room_id, capacity, price, amenities, room_view, room_extended, check_in, check_out, days_rented, payment, additional_charges)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?)`;
+    connection.query(sql, [
+      renting_id,
+      booking_id,
+      room_id,
+      employee_id,
+      customer_id,
+      capacity,
+      price,
+      amenities,
+      room_view,
+      // room_extended,
+      check_in,
+      check_out,
+      days_rented,
+      payment,
+      additional_charges
+    ], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+
 
 
 
@@ -573,6 +619,7 @@ module.exports = {
  getRoomById,
  createNewBooking,
  removeBooking,
+ createNewRenting,
 };
 
 

@@ -34,7 +34,8 @@
             <input type="number" id="employee_id" name="employee_id" required><br><br>
             <label for="customer_id">Customer ID:</label>
             <input type="number" id="customer_id" name="customer_id" required><br><br>
-
+            <label for="booking_id">Booking ID:</label>
+            <input type="number" id="booking_id" name="booking_id" required><br><br>
             <label for="amenities">amenities:</label>
             <input type="text" id="amenities" name="amenities" required><br><br>
 
@@ -76,7 +77,7 @@
     <script src="app.js"></script>
     <script>
 
-        async function addrentingToDatabase(renting_id, room_id, employee_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, num_days) {
+        async function addrentingToDatabase(renting_id, booking_id, employee_id, customer_id, room_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, num_days, payment, additional_charges) {
             const response = await fetch("/addrenting", {
                 method: "POST",
                 headers: {
@@ -84,9 +85,10 @@
                 },
                 body: JSON.stringify({
                     renting_id: renting_id,
-                    room_id: room_id,
+                    booking_id: booking_id,
                     employee_id: employee_id,
                     customer_id: customer_id,
+                    room_id: room_id,
                     capacity: capacity,
                     price: price,
                     amenities: amenities,
@@ -95,6 +97,8 @@
                     start_date: start_date,
                     end_date: end_date,
                     num_days: num_days,
+                    payment: payment,
+                    additional_charges: additional_charges,
                 })
             });
 
@@ -105,19 +109,23 @@
 
         function addrenting() {
             const renting_id = Math.floor(1000 + Math.random() * 9000);
-            const room_id = document.getElementById("room_id").value;
+            const booking_id = document.getElementById("booking_id").value;
             const employee_id = document.getElementById("employee_id").value;
             const customer_id = document.getElementById("customer_id").value;
+            const room_id = document.getElementById("room_id").value;
             const capacity = document.getElementById("capacity").value;
-            const amenities = document.getElementById("amenities").value;
             const price = document.getElementById("price").value;
+            const amenities = document.getElementById("amenities").value;
             const room_view = document.getElementById("room_view").value;
             const room_extended = document.querySelector('input[name="extended"]:checked').value;
             const start_date = document.getElementById("start_date").value;
             const end_date = document.getElementById("end_date").value;
             const num_days = document.getElementById("num_days").value;
+            const payment = document.getElementById("payment").value;
+            const additional_charges = document.getElementById("additional_charges").value;
 
-            addrentingToDatabase(renting_id, room_id, employee_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, num_days)
+
+            addrentingToDatabase(renting_id, booking_id, employee_id, customer_id, room_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, num_days, payment, additional_charges)
                 .then(() => {
                     alert("renting added successfully.");
                 })
