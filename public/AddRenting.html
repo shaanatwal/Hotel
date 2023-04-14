@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add renting</title>
+    <link rel="stylesheet" type="text/css" href="MainPage.css" />
+</head>
+
+<!--
+   room_id INT,
+   employee_id INT,
+   customer_id INT NOT NULL,
+   capaamenities INT NOT NULL,
+   price DECIMAL(10,2) NOT NULL,
+   amenities VARCHAR(255) NOT NULL,
+   room_view VARCHAR(255) NOT NULL,
+   room_extended INT NOT NULL,
+   start_date DATE NOT NULL,
+   end_date DATE NOT NULL,
+   num_days INT NOT NULL,
+   FOREIGN KEY (room_id) REFERENCES Room(room_id),
+   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+  -- FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ADDED BELOW
+-->
+
+<body>
+    <div class="container">
+        <h1>Add renting</h1>
+        <form onsubmit="return addrenting()">
+
+            <label for="room_id">Room ID:</label>
+            <input type="text" id="room_id" name="room_id" required><br><br>
+            <label for="employee_id">Employee ID:</label>
+            <input type="number" id="employee_id" name="employee_id" required><br><br>
+            <label for="customer_id">Customer ID:</label>
+            <input type="number" id="customer_id" name="customer_id" required><br><br>
+
+            <label for="amenities">amenities:</label>
+            <input type="text" id="amenities" name="amenities" required><br><br>
+
+            <label for="capacity">capacity:</label>
+            <input type="number" id="capacity" name="capacity" min="1" max="5" required><br><br>
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price"><br><br>
+
+            <label for="room_view">View:</label>
+            <input type="text" id="room_view" name="room_view" required><br><br>
+
+            <label>Extended:</label>
+            <div class="extended-options">
+                <input type="radio" id="extended-yes" name="extended" value="yes" />
+                <label for="extended-yes">Yes</label>
+                <input type="radio" id="extended-no" name="extended" value="no" />
+                <label for="extended-no">No</label>
+            </div>
+
+            <label for="checkin">Check-in date:</label>
+            <input type="date" id="start_date" />
+            <label for="checkout">Check-out date:</label>
+            <input type="date" id="end_date" />
+
+            <label>Number of Days:</label>
+            <input type="number" id="num_days" name="num_days" min="1" max="14" required><br><br>
+
+            <label for="payment">payment:</label>
+            <input type="text" id="payment" name="payment"><br><br>
+
+            <label for="additional_charges">additional charges:</label>
+            <input type="text" id="additional_charges" name="additional_charges"><br><br>
+
+
+            <input type="submit" value="Add Renting">
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+
+        async function addrentingToDatabase(renting_id, room_id, employee_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, num_days) {
+            const response = await fetch("/addrenting", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    renting_id: renting_id,
+                    room_id: room_id,
+                    employee_id: employee_id,
+                    customer_id: customer_id,
+                    capacity: capacity,
+                    price: price,
+                    amenities: amenities,
+                    room_view: room_view,
+                    room_extended: room_extended,
+                    start_date: start_date,
+                    end_date: end_date,
+                    num_days: num_days,
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        }
+
+        function addrenting() {
+            const renting_id = Math.floor(1000 + Math.random() * 9000);
+            const room_id = document.getElementById("room_id").value;
+            const employee_id = document.getElementById("employee_id").value;
+            const customer_id = document.getElementById("customer_id").value;
+            const capacity = document.getElementById("capacity").value;
+            const amenities = document.getElementById("amenities").value;
+            const price = document.getElementById("price").value;
+            const room_view = document.getElementById("room_view").value;
+            const room_extended = document.querySelector('input[name="extended"]:checked').value;
+            const start_date = document.getElementById("start_date").value;
+            const end_date = document.getElementById("end_date").value;
+            const num_days = document.getElementById("num_days").value;
+
+            addrentingToDatabase(renting_id, room_id, employee_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, num_days)
+                .then(() => {
+                    alert("renting added successfully.");
+                })
+                .catch((error) => {
+                    console.error("Error adding renting:", error);
+                    alert("Error adding renting.");
+                });
+
+            return false;
+        }
+
+    </script>
+</body>
+
+</html>
