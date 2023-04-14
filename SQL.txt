@@ -410,10 +410,12 @@ INSERT INTO Booking (booking_id, room_id, employee_id, customer_id, capacity, pr
  (9, 9, 100001, 20004, 3, 150.00, 'WiFi, TV, Balcony', 'Sea View', 1, '2023-08-15', '2023-08-19', 4),
  (10, 10, 100001, 20004, 2, 120.00, 'WiFi, TV, Pool', 'Garden View', 1, '2023-09-05', '2023-09-09', 4);
 
-
+INSERT INTO Renting (renting_id, booking_id, employee_id, customer_id, room_id, capacity, price, amenities, room_view, room_extended, check_in, check_out, days_rented, payment, additional_charges) 
+VALUES (1, 1, 100001, 20004, 1, 2, 100.00, 'WiFi, TV', 'Mountain View', 0, '2023-05-01', '2023-05-05', 4, 75.05, 34.85);
 select * from Employee;
 select * from Booking;
 select * from Room;
 select * from Hotel;
+select * from Renting;
 
 
