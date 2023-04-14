@@ -12,7 +12,6 @@
         <p>Please select an option below to continue:</p>
         <button type="button" onclick="goToManage('add')">Add Booking</button>
         <button type="button" onclick="goToManage('delete')">Delete Booking</button>
-        <button type="button" onclick="goToManage('update')">Update Booking</button>
     </div>
 
     <script src="app.js"></script>
@@ -20,8 +19,6 @@
         function goToManage(type) {
             if (type === "delete") {
                 window.location.href = "DeleteBooking.html";
-            } else if (type === "update") {
-                window.location.href = "UpdateBooking.html";
             }
             else if (type === "add") {
                 window.location.href = "AddBooking.html";

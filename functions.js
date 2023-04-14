@@ -333,6 +333,19 @@ async function removeHotel(hotel_id) {
   });
 }
 
+async function removeBooking(booking_id) {
+  const sql = "DELETE FROM Booking WHERE booking_id = ?";
+  return new Promise((resolve, reject) => {
+    connection.query(sql, [booking_id], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
+
 async function createHotel(
   hotel_id,
   chain_id,
@@ -373,6 +386,46 @@ async function createHotel(
     });
   });
 }
+
+async function createNewBooking(
+  booking_id,
+  room_id,
+  employee_id,
+  customer_id,
+  capacity,
+  price,
+  amenities,
+  room_view,
+  room_extended,
+  start_date,
+  end_date,
+  number_of_days,
+) {
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO Booking (booking_id, room_id, employee_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, number_of_days)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`;
+    connection.query(sql, [
+      booking_id,
+      room_id,
+      employee_id,
+      customer_id,
+      capacity,
+      price,
+      amenities,
+      room_view,
+    //  room_extended,
+      start_date,
+      end_date,
+      number_of_days
+    ], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+}
+
 
 async function createRoom(room_id, hotel_id, capacity, price, amenities, room_view, room_extended, damages) {
   return new Promise((resolve, reject) => {
@@ -518,6 +571,8 @@ module.exports = {
  updateHotel,
  updateRoom,
  getRoomById,
+ createNewBooking,
+ removeBooking,
 };
 
 

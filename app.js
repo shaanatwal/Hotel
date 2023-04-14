@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path"); // root
 const { getLocations, getHotelsByLocation, createCustomer,  checkCustomerUserCredentials, getHotelChainsByHotelId, getHotelIdByName,getHotelChainsByHotelName, getHotelById, updateHotel, updateRoom, getRoomById,
-  checkEmployeeUserCredentials, createEmployee,  getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeRoom, createRoom, removeCustomer, removeHotel, createHotel, removeEmployee
+  checkEmployeeUserCredentials, createEmployee,  getCapacities, getRoomViews, getAmenities, searchRooms, createBooking, removeRoom, createRoom, removeCustomer, removeHotel, createHotel, removeEmployee,createNewBooking,removeBooking
  } = require("./functions");
 
 
@@ -391,5 +391,57 @@ app.put("/updateroom", async (req, res) => {
   } catch (error) {
     console.error("Error updating room:", error);
     res.status(500).json({ error: "Error updating room" });
+  }
+});
+
+// THIS IS THE ONE FOR AddBooking.html
+app.post("/addbooking", async (req, res) => {
+  try {
+    const {
+      booking_id,
+      room_id,
+      employee_id,
+      customer_id,
+      capacity,
+      price,
+      amenities,
+      room_view,
+      room_extended,
+      start_date,
+      end_date,
+      num_days,
+    } = req.body;
+
+    await createNewBooking(
+      booking_id,
+      room_id,
+      employee_id,
+      customer_id,
+      capacity,
+      price,
+      amenities,
+      room_view,
+      room_extended,
+      start_date,
+      end_date,
+      num_days
+    );
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error creating new booking:", error);
+    res.status(500).json({ error: "Error creating new booking" });
+  }
+});
+
+app.delete("/deletebooking", async (req, res) => {
+  try {
+    const { booking_id } = req.body;
+    await removeBooking(booking_id);
+    res.sendStatus(200);
+  }
+  catch (error) {
+    console.error("Error deleting booking:", error);
+    res.status(500).json({ error: "Error deleting booking" });
   }
 });

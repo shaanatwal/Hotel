@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Delete Booking</title>
+    <link rel="stylesheet" type="text/css" href="MainPage.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Delete Booking</h1>
+        <p>Please provide the Booking ID:</p>
+        <form onsubmit="return deleteBooking()">
+            <label for="Booking-id">Booking ID:</label>
+            <input type="text" id="Booking-id" name="Booking-id"><br><br>
+            <input type="submit" value="Delete">
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        function deleteBooking() {
+            const BookingId = document.getElementById("Booking-id").value;
+            const url = "/deleteBooking";
+
+            fetch(url, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ booking_id: BookingId }),
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Error deleting Booking');
+                    }
+                })
+                .then((data) => {
+                    console.log(data);
+                    alert("Booking deleted successfully");
+                })
+                .catch((error) => {
+                    console.error("Error deleting Booking:", error);
+                    alert("If the Booking exists, it has been deleted.");
+                });
+            return false;
+        }
+    </script>
+</body>
+
+</html>

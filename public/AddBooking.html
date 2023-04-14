@@ -2,70 +2,91 @@
 <html>
 
 <head>
-    <title>Add Hotel</title>
+    <title>Add booking</title>
     <link rel="stylesheet" type="text/css" href="MainPage.css" />
 </head>
 
+<!--
+   room_id INT,
+   employee_id INT,
+   customer_id INT NOT NULL,
+   capaamenities INT NOT NULL,
+   price DECIMAL(10,2) NOT NULL,
+   amenities VARCHAR(255) NOT NULL,
+   room_view VARCHAR(255) NOT NULL,
+   room_extended INT NOT NULL,
+   start_date DATE NOT NULL,
+   end_date DATE NOT NULL,
+   num_days INT NOT NULL,
+   FOREIGN KEY (room_id) REFERENCES Room(room_id),
+   FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+  -- FOREIGN KEY (customer_id) REFERENCES Customer(customer_id) ADDED BELOW
+-->
+
 <body>
     <div class="container">
-        <h1>Add Hotel</h1>
-        <form onsubmit="return addHotel()">
-            <label for="chain_id">Chain:</label>
-            <select name="chain_id" id="chain_id">
-                <option value="1">Marriott</option>
-                <option value="2">Hilton</option>
-                <option value="3">Hyatt</option>
-                <option value="4">InterContinental</option>
-                <option value="5">Four Seasons</option>
-            </select><br><br>
-            <label for="hotel_name">Hotel Name:</label>
-            <input type="text" id="hotel_name" name="hotel_name" required><br><br>
-            <label for="street_number">Street Number:</label>
-            <input type="number" id="street_number" name="street_number" required><br><br>
-            <label for="street_name">Street Name:</label>
-            <input type="text" id="street_name" name="street_name" required><br><br>
-            <label for="building_number">Building Number:</label>
-            <input type="text" id="building_number" name="building_number"><br><br>
-            <label for="city">City:</label>
-            <input type="text" id="city" name="city" required><br><br>
-            <label for="province">Province:</label>
-            <input type="text" id="province" name="province" required><br><br>
-            <label for="zip">Zip:</label>
-            <input type="text" id="zip" name="zip" required><br><br>
-            <label for="category_hotel">Category (Stars):</label>
-            <input type="number" id="category_hotel" name="category_hotel" min="1" max="5" required><br><br>
-            <label for="number_of_rooms">Number of Rooms:</label>
-            <input type="number" id="number_of_rooms" name="number_of_rooms" required><br><br>
-            <label for="phone_number">Phone Number:</label>
-            <input type="text" id="phone_number" name="phone_number" required><br><br>
-            <label for="email_address">Email Address:</label>
-            <input type="email" id="email_address" name="email_address" required><br><br>
-            <input type="submit" value="Add Hotel">
+        <h1>Add booking</h1>
+        <form onsubmit="return addbooking()">
+
+            <label for="room_id">Room ID:</label>
+            <input type="text" id="room_id" name="room_id" required><br><br>
+            <label for="employee_id">Employee ID:</label>
+            <input type="number" id="employee_id" name="employee_id" required><br><br>
+            <label for="customer_id">Customer ID:</label>
+            <input type="number" id="customer_id" name="customer_id" required><br><br>
+
+            <label for="amenities">amenities:</label>
+            <input type="text" id="amenities" name="amenities" required><br><br>
+
+            <label for="capacity">capacity:</label>
+            <input type="number" id="capacity" name="capacity" min="1" max="5" required><br><br>
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price"><br><br>
+
+            <label for="room_view">View:</label>
+            <input type="text" id="room_view" name="room_view" required><br><br>
+
+            <label>Extended:</label>
+            <div class="extended-options">
+                <input type="radio" id="extended-yes" name="extended" value="yes" />
+                <label for="extended-yes">Yes</label>
+                <input type="radio" id="extended-no" name="extended" value="no" />
+                <label for="extended-no">No</label>
+            </div>
+
+            <label for="checkin">Check-in date:</label>
+            <input type="date" id="start_date" />
+            <label for="checkout">Check-out date:</label>
+            <input type="date" id="end_date" />
+
+            <label>Number of Days:</label>
+            <input type="number" id="num_days" name="num_days" min="1" max="14" required><br><br>
+            <input type="submit" value="Add Booking">
         </form>
     </div>
 
     <script src="app.js"></script>
     <script>
-        async function addHotelToDatabase(hotelId, chainId, hotelName, streetNumber, streetName, buildingNumber, city, province, zip, categoryHotel, numberOfRooms, phoneNumber, emailAddress) {
-            const response = await fetch("/addhotel", {
+
+        async function addbookingToDatabase(booking_id, room_id, employee_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, num_days) {
+            const response = await fetch("/addbooking", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    hotel_id: hotelId,
-                    chain_id: chainId,
-                    hotel_name: hotelName,
-                    street_number: streetNumber,
-                    street_name: streetName,
-                    building_number: buildingNumber,
-                    city: city,
-                    province: province,
-                    zip: zip,
-                    category_hotel: categoryHotel,
-                    number_of_rooms: numberOfRooms,
-                    phone_number: phoneNumber,
-                    email_address: emailAddress
+                    booking_id: booking_id,
+                    room_id: room_id,
+                    employee_id: employee_id,
+                    customer_id: customer_id,
+                    capacity: capacity,
+                    price: price,
+                    amenities: amenities,
+                    room_view: room_view,
+                    room_extended: room_extended,
+                    start_date: start_date,
+                    end_date: end_date,
+                    num_days: num_days,
                 })
             });
 
@@ -74,32 +95,32 @@
             }
         }
 
-        function addHotel() {
-            const hotelId = Math.floor(1000 + Math.random() * 9000);
-            const chainId = document.getElementById("chain_id").value;
-            const hotelName = document.getElementById("hotel_name").value;
-            const streetNumber = document.getElementById("street_number").value;
-            const streetName = document.getElementById("street_name").value;
-            const buildingNumber = document.getElementById("building_number").value;
-            const city = document.getElementById("city").value;
-            const province = document.getElementById("province").value;
-            const zip = document.getElementById("zip").value;
-            const categoryHotel = document.getElementById("category_hotel").value;
-            const numberOfRooms = document.getElementById("number_of_rooms").value;
-            const phoneNumber = document.getElementById("phone_number").value;
-            const emailAddress = document.getElementById("email_address").value;
+        function addbooking() {
+            const booking_id = Math.floor(1000 + Math.random() * 9000);
+            const room_id = document.getElementById("room_id").value;
+            const employee_id = document.getElementById("employee_id").value;
+            const customer_id = document.getElementById("customer_id").value;
+            const capacity = document.getElementById("capacity").value;
+            const amenities = document.getElementById("amenities").value;
+            const price = document.getElementById("price").value;
+            const room_view = document.getElementById("room_view").value;
+            const room_extended = document.querySelector('input[name="extended"]:checked').value;
+            const start_date = document.getElementById("start_date").value;
+            const end_date = document.getElementById("end_date").value;
+            const num_days = document.getElementById("num_days").value;
 
-            addHotelToDatabase(hotelId, chainId, hotelName, streetNumber, streetName, buildingNumber, city, province, zip, categoryHotel, numberOfRooms, phoneNumber, emailAddress)
+            addbookingToDatabase(booking_id, room_id, employee_id, customer_id, capacity, price, amenities, room_view, room_extended, start_date, end_date, num_days)
                 .then(() => {
-                    alert("Hotel added successfully.");
+                    alert("booking added successfully.");
                 })
                 .catch((error) => {
-                    console.error("Error adding hotel:", error);
-                    alert("Error adding hotel.");
+                    console.error("Error adding booking:", error);
+                    alert("Error adding booking.");
                 });
 
             return false;
         }
+
     </script>
 </body>
 
